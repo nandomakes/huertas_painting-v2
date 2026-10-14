@@ -1,0 +1,23 @@
+---
+// Shared frame for the review funnel (/we-value-our-clients/ and its two
+// follow-ups): a centered white card with the logo on the cream surface.
+// The pages are noindex — they are reached from texts, emails and QR codes.
+import Logo from './Logo.astro';
+
+interface Props {
+  title: string;
+  sub?: string;
+}
+const { title, sub } = Astro.props;
+---
+
+<section class="funnel section bg-surface">
+  <div class="wrap max-w-[50rem]">
+    <div class="funnel-card card px-6 py-10 text-center sm:px-12 sm:py-14">
+      <Logo class="mx-auto h-20 w-auto sm:h-24" />
+      <h1 class="h2 mt-8">{title}</h1>
+      {sub && <p class="mx-auto mt-4 max-w-[34rem] text-[1.05rem] text-body">{sub}</p>}
+      <slot />
+    </div>
+  </div>
+</section>

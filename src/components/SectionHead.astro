@@ -1,0 +1,27 @@
+---
+// Centered section title with the reference's divider underneath
+// (two short rules around a little paint roller).
+import Icon from './Icon.astro';
+
+interface Props {
+  title: string;
+  sub?: string;
+  eyebrow?: string;
+  align?: 'center' | 'left';
+  tone?: 'light' | 'dark';
+  as?: 'h1' | 'h2';
+}
+const { title, sub, eyebrow, align = 'center', tone = 'light', as: Tag = 'h2' } = Astro.props;
+const center = align === 'center';
+---
+
+<div class:list={['section-head', center ? 'mx-auto max-w-[46rem] text-center' : 'max-w-[40rem]']}>
+  {eyebrow && <p class:list={['reveal eyebrow mb-3', tone === 'dark' ? 'text-primary' : 'text-muted']}>{eyebrow}</p>}
+  <Tag class:list={['reveal h2', tone === 'dark' && '!text-paper']}>{title}</Tag>
+  <div class:list={['divider reveal mt-5 flex items-center gap-3 text-primary', center && 'justify-center']} aria-hidden="true">
+    <span class="divider-rule h-px w-9 bg-current opacity-40"></span>
+    <Icon name="roller" size={22} stroke={2.2} />
+    <span class="divider-rule h-px w-9 bg-current opacity-40"></span>
+  </div>
+  {sub && <p class:list={['reveal mt-5', tone === 'dark' ? 'text-paper/85' : 'text-body']}>{sub}</p>}
+</div>

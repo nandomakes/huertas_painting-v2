@@ -1,0 +1,56 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Hero from '../components/Hero.astro';
+import EstimateSection from '../components/EstimateSection.astro';
+import Glance from '../components/Glance.astro';
+import Faq from '../components/Faq.astro';
+import ProfileLinks from '../components/ProfileLinks.astro';
+import Footer from '../components/Footer.astro';
+import CallFab from '../components/CallFab.astro';
+import { HOME_FAQS, SITE, BACKGROUNDS, faqPageSchema } from '../consts';
+
+// URL kept as /contact-us/ — the WordPress slug — so links and rankings carry over.
+const title = "Contact Huerta's Painting | Free Estimates in Apple Valley, MN";
+const description =
+  'Call or text (952) 769-3906 or send the form for a free in-home painting estimate. Serving Apple Valley and the Twin Cities South Metro.';
+
+const schema = [
+  faqPageSchema(HOME_FAQS),
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: `${SITE.url}/` },
+      { '@type': 'ListItem', position: 2, name: 'Contact', item: `${SITE.url}/contact-us/` },
+    ],
+  },
+];
+---
+
+<Layout title={title} description={description} schema={schema}>
+  <Header />
+  <main id="content">
+    <Hero
+      variant="page"
+      eyebrow="Contact us"
+      title="Get In Touch With Huerta's Painting"
+      sub="Either call or text Pedro Ramirez-Huerta or fill out the form. We look forward to hearing from you."
+      image={BACKGROUNDS.contact}
+      imageAlt="Home with a fresh exterior paint job"
+      focus="50% 50%"
+      crumbs={[{ href: '/', label: 'Home' }, { label: 'Contact' }]}
+    />
+    <EstimateSection title="Let's Work Together" />
+    <section class="section bg-paper !pt-0">
+      <div class="wrap text-center">
+        <p class="reveal font-display text-[1.1rem] font-semibold text-ink">Find us online</p>
+        <ProfileLinks mode="follow" class="reveal mt-5 justify-center" />
+      </div>
+    </section>
+    <Glance />
+    <Faq items={HOME_FAQS} />
+  </main>
+  <Footer />
+  <CallFab />
+</Layout>

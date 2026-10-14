@@ -1,0 +1,32 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import CallFab from '../components/CallFab.astro';
+import { SITE, CONTACT } from '../consts';
+
+const title = `Page not found | ${SITE.name}`;
+const description = "The page you're looking for doesn't exist — head back home or check out our painting services.";
+---
+
+<Layout title={title} description={description} noindex>
+  <Header />
+  <main id="content">
+    <section class="bg-secondary text-paper">
+      <div class="wrap flex min-h-[70vh] max-w-3xl flex-col items-center justify-center py-20 text-center">
+        <p class="reveal font-display text-[clamp(4rem,14vw,7rem)] font-bold leading-none text-primary">404</p>
+        <h1 class="reveal h-hero mt-4 !text-[clamp(1.8rem,1.3rem+2vw,2.6rem)]">This Wall Still Needs a Coat</h1>
+        <p class="reveal mx-auto mt-5 max-w-[50ch] text-paper/85">
+          The page you're looking for doesn't exist or may have moved. Let's get you back to fresh paint.
+        </p>
+        <div class="reveal mt-9 flex flex-wrap items-center justify-center gap-3">
+          <a href="/" class="btn btn-primary">Back to Home</a>
+          <a href="/services/" class="btn btn-outline-light">Our Services</a>
+          <a href={`tel:${CONTACT.phoneTel}`} class="btn btn-outline-light">Call {CONTACT.phoneDisplay}</a>
+        </div>
+      </div>
+    </section>
+  </main>
+  <Footer />
+  <CallFab />
+</Layout>

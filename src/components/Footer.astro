@@ -1,0 +1,103 @@
+---
+// Reference footer: navy. Logo + blurb + badges + social icons on the left,
+// Services / Company / Contact columns, a "Where we paint" city row, and a
+// darker legal bar.
+import { Image } from 'astro:assets';
+import { SERVICES, CONTACT, AREA_PAGES, BADGES, PROFILES, REVIEW_FUNNEL } from '../consts';
+import Logo from './Logo.astro';
+import Icon from './Icon.astro';
+import BrandIcon from './BrandIcon.astro';
+
+const year = new Date().getFullYear();
+const socials = [
+  { key: 'facebook', label: 'Facebook', href: PROFILES.facebook },
+  { key: 'nextdoor', label: 'Nextdoor', href: PROFILES.nextdoor },
+  { key: 'google', label: 'Google Business Profile', href: PROFILES.google },
+] as const;
+---
+
+<footer class="site-footer bg-secondary pb-[4.5rem] text-paper/85 lg:pb-0">
+  <div class="wrap grid gap-12 py-14 md:grid-cols-2 lg:grid-cols-[1.35fr_1fr_1fr_1.25fr] lg:gap-10">
+    <div>
+      <a href="/" aria-label="Huerta's Painting — home"><Logo light class="h-20 w-auto" loading="lazy" /></a>
+      <p class="mt-5 max-w-[20rem] text-[0.92rem] leading-[1.65]">
+        Interior and exterior house painting, drywall and ceiling repair, and deck refinishing for Apple Valley and the
+        Twin Cities South Metro since 2018. Family-owned, fully insured, workmanship guaranteed.
+      </p>
+      <div class="mt-5 flex items-center gap-3">
+        <a href={BADGES.nextdoor.href} target="_blank" rel="noopener noreferrer" class="rounded-md bg-paper p-1"><Image src={BADGES.nextdoor.src} alt={BADGES.nextdoor.alt} width={96} class="h-12 w-12 object-contain" loading="lazy" /></a>
+        <a href={BADGES.bbb.href} target="_blank" rel="noopener noreferrer" class="flex h-14 items-center rounded-md bg-paper px-2"><Image src={BADGES.bbb.src} alt={BADGES.bbb.alt} width={200} class="h-9 w-auto object-contain" loading="lazy" /></a>
+      </div>
+      <ul class="mt-5 flex gap-2.5">
+        {
+          socials.map((s) => (
+            <li>
+              <a href={s.href} target="_blank" rel="noopener noreferrer" data-profile={s.key} aria-label={s.label} class="social-icon flex h-10 w-10 items-center justify-center rounded-full bg-paper/10 text-paper transition-colors hover:bg-primary" style="--nd-cut:#192A53">
+                <BrandIcon name={s.key} size={18} mono />
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+
+    <div>
+      <h2 class="footer-title text-[0.85rem] font-semibold uppercase tracking-[0.12em] text-paper">Services</h2>
+      <ul class="mt-5 space-y-3 text-[0.95rem]">
+        {SERVICES.map((s) => <li><a href={`/services/${s.slug}/`} class="hover:text-primary">{s.name}</a></li>)}
+      </ul>
+    </div>
+
+    <div>
+      <h2 class="footer-title text-[0.85rem] font-semibold uppercase tracking-[0.12em] text-paper">Company</h2>
+      <ul class="mt-5 space-y-3 text-[0.95rem]">
+        <li><a href="/about/" class="hover:text-primary">About Huerta's Painting</a></li>
+        <li><a href="/gallery/" class="hover:text-primary">Before &amp; After Gallery</a></li>
+        <li><a href="/services/" class="hover:text-primary">All Services</a></li>
+        <li><a href="/contact-us/" class="hover:text-primary">Contact &amp; Free Estimate</a></li>
+        <li><a href={REVIEW_FUNNEL.start} class="hover:text-primary">Leave Us a Review</a></li>
+      </ul>
+    </div>
+
+    <div>
+      <h2 class="footer-title text-[0.85rem] font-semibold uppercase tracking-[0.12em] text-paper">Contact</h2>
+      <ul class="mt-5 space-y-3.5 text-[0.95rem]">
+        <li>
+          <a href={`tel:${CONTACT.phoneTel}`} class="flex items-center gap-3 font-display text-[1.3rem] font-semibold text-paper hover:text-primary">
+            <Icon name="phone" size={20} stroke={2} class="text-primary" />{CONTACT.phoneDisplay}
+          </a>
+          <span class="ml-8 text-[0.8rem] text-paper/60">Call or text</span>
+        </li>
+        <li class="flex items-start gap-3"><Icon name="mail" size={18} stroke={1.8} class="mt-1 shrink-0 text-primary" /><a href={`mailto:${CONTACT.email}`} class="hover:text-primary">{CONTACT.email}</a></li>
+        <li class="flex items-start gap-3"><Icon name="pin" size={18} stroke={1.8} class="mt-1 shrink-0 text-primary" />{CONTACT.city}</li>
+        <li class="flex items-start gap-3"><Icon name="shield" size={18} stroke={1.8} class="mt-1 shrink-0 text-primary" />Fully registered &amp; insured</li>
+      </ul>
+      <a href="/contact-us/#estimate" class="btn btn-primary mt-6">Schedule a Free Estimate</a>
+    </div>
+  </div>
+
+  <div class="wrap">
+    <p class="border-t border-paper/15 py-6 text-[0.88rem] leading-[1.9]">
+      <strong class="font-semibold text-paper">Where we paint:</strong>
+      {
+        AREA_PAGES.map((a, i) => (
+          <>
+            <a href={`/${a.slug}/`} class="hover:text-primary">{a.city}</a>
+            {i < AREA_PAGES.length - 1 && <span class="mx-1 opacity-50">·</span>}
+          </>
+        ))
+      }
+    </p>
+  </div>
+
+  <div class="footer-legal bg-secondaryDk">
+    <div class="wrap flex flex-col gap-2 py-5 text-[0.8rem] text-paper/70 sm:flex-row sm:items-center sm:justify-between">
+      <p>© 2018–{year} Huerta's Painting, LLC. All rights reserved.</p>
+      <p class="flex flex-wrap gap-x-3">
+        <a href="/contact-us/" class="hover:text-primary">Contact</a><span aria-hidden="true">|</span>
+        <a href={REVIEW_FUNNEL.start} class="hover:text-primary">Leave a Review</a><span aria-hidden="true">|</span>
+        <a href="/#faq" class="hover:text-primary">FAQs</a>
+      </p>
+    </div>
+  </div>
+</footer>

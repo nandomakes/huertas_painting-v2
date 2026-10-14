@@ -1,0 +1,38 @@
+---
+// Reference warranty strip: three white cards on cream, shield icon,
+// bold title, one-liner and a link.
+import Icon from './Icon.astro';
+
+const items = [
+  {
+    title: 'Guaranteed Workmanship',
+    body: 'We guarantee our workmanship and complete every project to 100% satisfaction.',
+    link: { href: '/about/', label: 'Why homeowners choose us' },
+  },
+  {
+    title: 'Fully Registered & Insured',
+    body: "A registered Minnesota LLC, fully insured, so nothing lands on you.",
+    link: { href: '/#faq', label: 'See common questions' },
+  },
+  {
+    title: 'Protected, Spotless Job Sites',
+    body: 'Plastic on floors, walls and furniture from set-up to the final clean-up.',
+    link: { href: '/gallery/', label: 'See our before & afters' },
+  },
+];
+---
+
+<section class="guarantees section bg-surface !pb-0">
+  <ul class="wrap grid gap-5 md:grid-cols-3">
+    {
+      items.map((g) => (
+        <li class="reveal guarantee-card card flex flex-col items-center px-6 py-8 text-center">
+          <Icon name="shield" size={30} stroke={2} class="text-accent" />
+          <h3 class="h3 mt-3 !text-[1.35rem] text-ink">{g.title}</h3>
+          <p class="mt-2 text-[0.95rem] leading-[1.6] text-body">{g.body}</p>
+          <a href={g.link.href} class="link-arrow mt-5">{g.link.label} →</a>
+        </li>
+      ))
+    }
+  </ul>
+</section>

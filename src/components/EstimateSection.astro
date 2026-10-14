@@ -1,0 +1,56 @@
+---
+// The #estimate anchor every "Schedule Free Estimate" button points to:
+// pitch + contact facts on the left, the form in a white card on the right.
+import { CONTACT, SITE } from '../consts';
+import EstimateForm from './EstimateForm.astro';
+import Icon from './Icon.astro';
+
+interface Props {
+  service?: string;
+  title?: string;
+  tone?: 'paper' | 'surface';
+}
+const { service = '', title = 'Get Your Free Painting Estimate', tone = 'paper' } = Astro.props;
+---
+
+<section id="estimate" class:list={['estimate section', tone === 'paper' ? 'bg-paper' : 'bg-surface']}>
+  <div class="wrap grid gap-10 lg:grid-cols-[0.85fr_1.15fr] lg:gap-14">
+    <div>
+      <h2 class="reveal h2">{title}</h2>
+      <p class="reveal mt-5 text-body">
+        Call or text {SITE.founder} or send the form. We'll schedule a free in-home consultation, take measurements and
+        send you a custom quote.
+      </p>
+      <ul class="reveal mt-8 space-y-5">
+        <li>
+          <a href={`tel:${CONTACT.phoneTel}`} class="group flex items-center gap-4">
+            <span class="estimate-icon flex h-12 w-12 items-center justify-center rounded-full bg-primary text-onPrimary"><Icon name="phone" size={20} stroke={2} /></span>
+            <span>
+              <span class="block text-[0.75rem] font-medium uppercase tracking-[0.1em] text-muted">Call or text</span>
+              <span class="font-display text-[1.35rem] font-bold text-ink group-hover:text-link">{CONTACT.phoneDisplay}</span>
+            </span>
+          </a>
+        </li>
+        <li>
+          <a href={`mailto:${CONTACT.email}`} class="group flex items-center gap-4">
+            <span class="estimate-icon flex h-12 w-12 items-center justify-center rounded-full bg-secondary text-paper"><Icon name="mail" size={20} stroke={1.8} /></span>
+            <span>
+              <span class="block text-[0.75rem] font-medium uppercase tracking-[0.1em] text-muted">Email</span>
+              <span class="font-medium text-ink group-hover:text-link">{CONTACT.email}</span>
+            </span>
+          </a>
+        </li>
+        <li class="flex items-center gap-4">
+          <span class="estimate-icon flex h-12 w-12 items-center justify-center rounded-full bg-secondary text-paper"><Icon name="pin" size={20} stroke={1.8} /></span>
+          <span>
+            <span class="block text-[0.75rem] font-medium uppercase tracking-[0.1em] text-muted">Based in</span>
+            <span class="font-medium text-ink">{CONTACT.city} · serving the South Metro</span>
+          </span>
+        </li>
+      </ul>
+    </div>
+    <div class="reveal estimate-card card p-6 sm:p-9">
+      <EstimateForm id={`estimate-form`} service={service} />
+    </div>
+  </div>
+</section>

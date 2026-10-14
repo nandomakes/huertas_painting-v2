@@ -1,0 +1,42 @@
+---
+// Reference "Award-Winning Quality & Customer Service": four white cards
+// on cream. Each one links out — Google/Facebook cards carry no rating.
+import { Image } from 'astro:assets';
+import { BADGES, PROFILES } from '../consts';
+import BrandIcon from './BrandIcon.astro';
+import Icon from './Icon.astro';
+---
+
+<section class="recognition section bg-surface">
+  <div class="wrap">
+    <h2 class="reveal h2 text-center">Trusted by Homeowners Across the South Metro</h2>
+    <ul class="mt-10 grid grid-cols-2 gap-4 sm:gap-6 lg:grid-cols-4">
+      <li class="reveal">
+        <a href={BADGES.nextdoor.href} target="_blank" rel="noopener noreferrer" data-profile="nextdoor" class="award-card card lift flex h-full flex-col items-center justify-center px-4 py-8 text-center sm:py-10">
+          <Image src={BADGES.nextdoor.src} alt="" width={192} class="h-24 w-24 object-contain" />
+          <h3 class="h3 mt-5 text-heading">Nextdoor Neighborhood Fave 2021–2025</h3>
+        </a>
+      </li>
+      <li class="reveal">
+        <a href={PROFILES.google} target="_blank" rel="noopener noreferrer" data-profile="google" class="award-card card lift flex h-full flex-col items-center justify-center px-4 py-8 text-center sm:py-10">
+          <span class="flex h-24 items-center"><BrandIcon name="google" size={72} /></span>
+          <h3 class="h3 mt-5 text-heading">Read Our Reviews on Google</h3>
+          <span class="mt-2 inline-flex items-center gap-1 text-[0.8rem] font-medium text-muted">Google Business Profile <Icon name="external" size={13} stroke={2} /></span>
+        </a>
+      </li>
+      <li class="reveal">
+        <a href={BADGES.bbb.href} target="_blank" rel="noopener noreferrer" class="award-card card lift flex h-full flex-col items-center justify-center px-4 py-8 text-center sm:py-10">
+          <span class="flex h-24 items-center"><Image src={BADGES.bbb.src} alt="" width={200} class="h-14 w-auto object-contain" /></span>
+          <h3 class="h3 mt-5 text-heading">BBB Accredited Business</h3>
+        </a>
+      </li>
+      <li class="reveal">
+        <a href={PROFILES.facebookReviews} target="_blank" rel="noopener noreferrer" data-profile="facebook" class="award-card card lift flex h-full flex-col items-center justify-center px-4 py-8 text-center sm:py-10">
+          <span class="flex h-24 items-center"><BrandIcon name="facebook" size={68} /></span>
+          <h3 class="h3 mt-5 text-heading">Recommended on Facebook</h3>
+          <span class="mt-2 inline-flex items-center gap-1 text-[0.8rem] font-medium text-muted">See what clients say <Icon name="external" size={13} stroke={2} /></span>
+        </a>
+      </li>
+    </ul>
+  </div>
+</section>

@@ -1,0 +1,149 @@
+---
+// Reference header: navy announcement bar, then a white bar with the logo
+// left, the menu (with dropdowns) in the middle and the phone number in a
+// solid full-height block on the right — always one tap to call.
+import { NAV_LINKS, CONTACT } from '../consts';
+import Logo from './Logo.astro';
+import Icon from './Icon.astro';
+
+const here = Astro.url.pathname.replace(/\/+$/, '') || '/';
+const isCurrent = (href: string) => {
+  const h = href.replace(/\/+$/, '') || '/';
+  return h === '/' ? here === '/' : here === h || here.startsWith(h + '/');
+};
+---
+
+<div class="topbar bg-secondary text-paper">
+  <div class="wrap flex items-center justify-center gap-x-3 gap-y-1 py-2.5 text-center text-[0.84rem] font-medium leading-snug">
+    <span class="hidden h-1.5 w-1.5 shrink-0 rounded-full bg-primary sm:inline-block" aria-hidden="true"></span>
+    <p>
+      <strong class="font-semibold">Free in-home estimates</strong>
+      <span class="hidden md:inline"> across Apple Valley &amp; the South Metro.</span>
+      <a href={`tel:${CONTACT.phoneTel}`} class="ml-1 font-semibold underline decoration-primary decoration-2 underline-offset-4 hover:text-link">
+        Call or text {CONTACT.phoneDisplay} →
+      </a>
+    </p>
+  </div>
+</div>
+
+<header data-header class="site-header sticky top-0 z-50 bg-paper shadow-[0_1px_0_rgba(0,0,0,0.06)]">
+  <nav class="flex items-stretch justify-between" aria-label="Primary">
+    <a href="/" class="flex shrink-0 items-center py-2.5 pl-5 lg:pl-[max(1.25rem,calc((100vw-67.5rem)/2-4rem))]" aria-label="Huerta's Painting — home">
+      <Logo class="h-12 w-auto lg:h-[3.6rem]" />
+    </a>
+
+    <ul class="hidden items-center gap-1 lg:flex xl:gap-2">
+      {
+        NAV_LINKS.map((link) => (
+          <li class="group relative">
+            <a
+              href={link.href}
+              aria-current={isCurrent(link.href) ? 'page' : undefined}
+              class="nav-link inline-flex items-center gap-1.5 whitespace-nowrap px-3 py-3 font-display text-[1.02rem] font-medium text-body transition-colors duration-200 hover:text-link aria-[current=page]:text-link xl:px-4"
+            >
+              {link.label}
+              {link.children && (
+                <svg width="10" height="10" viewBox="0 0 10 10" fill="currentColor" aria-hidden="true" class="transition-transform duration-200 group-hover:rotate-180 group-focus-within:rotate-180">
+                  <path d="M0 2.5h10L5 8z" />
+                </svg>
+              )}
+            </a>
+            {link.children && (
+              <div class="pointer-events-none invisible absolute left-0 top-full z-50 pt-2 opacity-0 transition-opacity duration-200 group-hover:pointer-events-auto group-hover:visible group-hover:opacity-100 group-focus-within:pointer-events-auto group-focus-within:visible group-focus-within:opacity-100">
+                <ul class="nav-dropdown w-64 rounded-card border border-line bg-paper py-2 shadow-[0_20px_40px_-20px_rgba(0,0,0,0.3)]">
+                  {link.children.map((child) => (
+                    <li>
+                      <a
+                        href={child.href}
+                        aria-current={isCurrent(child.href) ? 'page' : undefined}
+                        class="block px-5 py-2 text-[0.92rem] text-body transition-colors duration-200 hover:bg-surface hover:text-link aria-[current=page]:text-link"
+                      >
+                        {child.label}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+          </li>
+        ))
+      }
+    </ul>
+
+    <a
+      href={`tel:${CONTACT.phoneTel}`}
+      class="header-phone hidden items-center justify-center gap-3 bg-primary px-8 font-display text-[1.05rem] font-bold text-onPrimary transition-colors hover:bg-primaryDk lg:flex xl:min-w-[19rem]"
+      aria-label={`Call ${CONTACT.phoneDisplay}`}
+    >
+      <Icon name="phone" size={20} stroke={1.6} />
+      {CONTACT.phoneDisplay}
+    </a>
+
+    <div class="flex items-center gap-1 pr-3 lg:hidden">
+      <a href={`tel:${CONTACT.phoneTel}`} class="header-phone-sm flex h-11 items-center gap-2 rounded-btn bg-primary px-3.5 font-display text-sm font-bold text-onPrimary" aria-label={`Call ${CONTACT.phoneDisplay}`}>
+        <Icon name="phone" size={17} stroke={2} />
+        <span class="hidden sm:inline">{CONTACT.phoneDisplay}</span>
+        <span class="sm:hidden">Call</span>
+      </a>
+      <button id="menu-toggle" type="button" class="flex h-11 w-11 items-center justify-center text-ink" aria-expanded="false" aria-controls="mobile-menu" aria-label="Open menu">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+          <path class="menu-open" d="M4 7h16M4 12h16M4 17h16"></path>
+          <path class="menu-close hidden" d="M6 6l12 12M18 6L6 18"></path>
+        </svg>
+      </button>
+    </div>
+  </nav>
+
+  <div id="mobile-menu" class="grid grid-rows-[0fr] overflow-hidden border-t border-line bg-paper opacity-0 transition-[grid-template-rows,opacity] duration-300 ease-out lg:hidden">
+    <div id="menu-inner" class="max-h-[calc(100svh-8rem)] min-h-0 overflow-y-auto">
+      <ul class="px-5 pb-6 pt-1 font-display font-medium">
+        {
+          NAV_LINKS.map((link) => (
+            <li class="border-b border-line">
+              <a href={link.href} aria-current={isCurrent(link.href) ? 'page' : undefined} class="block py-3.5 text-ink aria-[current=page]:text-link">
+                {link.label}
+              </a>
+              {link.children && (
+                <ul class="grid grid-cols-2 gap-x-4 pb-3 pl-3 text-sm">
+                  {link.children.map((child) => (
+                    <li>
+                      <a href={child.href} class="block py-1.5 text-muted hover:text-link">
+                        {child.label}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </li>
+          ))
+        }
+        <li class="flex flex-col gap-3 pt-5">
+          <a href="#estimate" class="btn btn-primary w-full">Schedule Free Estimate</a>
+          <a href={`tel:${CONTACT.phoneTel}`} class="btn btn-outline w-full">Call or Text {CONTACT.phoneDisplay}</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</header>
+
+<script>
+  const toggle = document.getElementById('menu-toggle');
+  const menu = document.getElementById('mobile-menu');
+  const inner = document.getElementById('menu-inner');
+  if (toggle && menu && inner) {
+    const setOpen = (open: boolean) => {
+      menu.classList.toggle('grid-rows-[1fr]', open);
+      menu.classList.toggle('grid-rows-[0fr]', !open);
+      menu.classList.toggle('opacity-100', open);
+      menu.classList.toggle('opacity-0', !open);
+      inner.toggleAttribute('inert', !open);
+      toggle.setAttribute('aria-expanded', String(open));
+      toggle.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+      toggle.querySelector('.menu-open')?.classList.toggle('hidden', open);
+      toggle.querySelector('.menu-close')?.classList.toggle('hidden', !open);
+    };
+    setOpen(false);
+    toggle.addEventListener('click', () => setOpen(toggle.getAttribute('aria-expanded') !== 'true'));
+    menu.querySelectorAll('a').forEach((a) => a.addEventListener('click', () => setOpen(false)));
+  }
+</script>

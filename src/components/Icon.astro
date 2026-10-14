@@ -1,0 +1,56 @@
+---
+// Line icons on a 24×24 grid. Stroke width comes from `stroke` so the same
+// icon works thin (cards) or bold (checklists).
+interface Props {
+  name: string;
+  class?: string;
+  size?: number;
+  stroke?: number;
+}
+const { name, class: className = '', size = 24, stroke = 1.8 } = Astro.props;
+
+const PATHS: Record<string, string> = {
+  star: '<path d="M12 3.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8L12 16.9l-5.2 2.7 1-5.8-4.3-4.1 5.9-.9z"/>',
+  home: '<path d="M3.5 11 12 4l8.5 7"/><path d="M5.5 9.5V20h13V9.5"/><path d="M10 20v-5.5h4V20"/>',
+  shield: '<path d="M12 3l7.5 3v5.2c0 4.6-3.1 8.3-7.5 9.8-4.4-1.5-7.5-5.2-7.5-9.8V6z"/><path d="M8.8 12.2l2.2 2.2 4.3-4.4"/>',
+  badge: '<circle cx="12" cy="9.5" r="5.5"/><path d="M9.5 9.6l1.7 1.7 3.3-3.4"/><path d="M8.6 14l-1.6 6.5 5-2.6 5 2.6-1.6-6.5"/>',
+  spark: '<path d="M12 3v4M12 17v4M3 12h4M17 12h4M5.6 5.6l2.8 2.8M15.6 15.6l2.8 2.8M5.6 18.4l2.8-2.8M15.6 8.4l2.8-2.8"/>',
+  roller: '<rect x="4" y="3.5" width="13" height="5" rx="1"/><path d="M17 6h2.5v5H11v3"/><rect x="9.5" y="14" width="3" height="7" rx="1"/>',
+  brush: '<path d="M14.5 3.5l6 6-7.5 7.5-6-6z"/><path d="M7 11l-2.5 2.5a2.5 2.5 0 0 0 0 3.5L7 19.5a2.5 2.5 0 0 0 3.5 0L13 17"/>',
+  hammer: '<path d="M14 6l4 4"/><path d="M4 20l9-9"/><path d="M11 4.5l2-1.5 6.5 6.5-1.5 2-3-1-2.5-2.5z"/>',
+  house: '<path d="M3 11.5 12 4l9 7.5"/><path d="M5 10v10h14V10"/><rect x="9.5" y="13.5" width="5" height="6.5"/>',
+  wall: '<rect x="3" y="4" width="18" height="16"/><path d="M3 9.3h18M3 14.6h18M9 4v5.3M15 4v5.3M6 9.3v5.3M12 9.3v5.3M18 9.3v5.3M9 14.6V20M15 14.6V20"/>',
+  texture: '<path d="M3 5h18"/><circle cx="6" cy="9" r="1"/><circle cx="11" cy="8.5" r="1"/><circle cx="16" cy="9.3" r="1"/><circle cx="8.5" cy="12.5" r="1"/><circle cx="13.5" cy="12.2" r="1"/><circle cx="18.5" cy="12.8" r="1"/><circle cx="6" cy="16" r="1"/><circle cx="11" cy="15.8" r="1"/><circle cx="16" cy="16.4" r="1"/>',
+  ceiling: '<path d="M3 5h18"/><path d="M12 5v4"/><path d="M8 13a4 4 0 0 1 8 0z"/><path d="M10.5 16.5 9.5 19M13.5 16.5l1 2.5"/>',
+  deck: '<path d="M3 9h18M3 13h18"/><path d="M5 9v11M19 9v11M12 13v7"/><path d="M5 9V5M19 9V5"/>',
+  phone: '<path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"/>',
+  chat: '<path d="M4 5h16v11H9l-5 4z"/>',
+  mail: '<rect x="3" y="5" width="18" height="14" rx="1"/><path d="m3.5 6 8.5 7 8.5-7"/>',
+  pin: '<path d="M12 21s-7-6.1-7-11.5a7 7 0 0 1 14 0C19 14.9 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/>',
+  arrow: '<path d="M5 12h14M13 6l6 6-6 6"/>',
+  check: '<path d="m5 12.5 4.5 4.5L19 7.5"/>',
+  calendar: '<rect x="3.5" y="5" width="17" height="15" rx="1.5"/><path d="M3.5 10h17M8 3v4M16 3v4"/>',
+  clipboard: '<rect x="5" y="4.5" width="14" height="16.5" rx="1.5"/><path d="M9 4.5V3h6v1.5M8.5 10h7M8.5 13.5h7M8.5 17h4"/>',
+  user: '<circle cx="12" cy="8" r="4"/><path d="M4.5 20.5a7.5 7.5 0 0 1 15 0"/>',
+  clean: '<path d="M4 20h16"/><path d="M7 20l1.5-8h7L17 20"/><path d="M12 12V3"/>',
+  thumbUp: '<path d="M7 10.5V20H4v-9.5z"/><path d="M7 10.5l4-7c1.7 0 2.6 1.2 2.2 2.9L12.6 9H19a1.8 1.8 0 0 1 1.8 2.1l-1.3 7.2A2 2 0 0 1 17.5 20H7"/>',
+  thumbDown: '<path d="M7 13.5V4H4v9.5z"/><path d="M7 13.5l4 7c1.7 0 2.6-1.2 2.2-2.9L12.6 15H19a1.8 1.8 0 0 0 1.8-2.1l-1.3-7.2A2 2 0 0 0 17.5 4H7"/>',
+  external: '<path d="M14 4h6v6M20 4l-9 9"/><path d="M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/>',
+  clock: '<circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/>',
+  dollar: '<path d="M12 3v18M16.5 7.5c-.6-1.4-2.3-2.3-4.5-2.3-2.6 0-4.3 1.3-4.3 3.2 0 4.4 9 2.4 9 6.9 0 1.9-1.9 3.4-4.7 3.4-2.3 0-4.1-1-4.8-2.6"/>',
+};
+---
+
+<svg
+  width={size}
+  height={size}
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width={stroke}
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  aria-hidden="true"
+  class={className}
+  set:html={PATHS[name] ?? PATHS.star}
+/>

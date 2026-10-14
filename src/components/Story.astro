@@ -1,0 +1,74 @@
+---
+// Reference "Our Story" (two columns: story + recognition list) followed by
+// "Meet Our Founder" (photo left, text right on cream).
+import { Image } from 'astro:assets';
+import { IMAGES, ABOUT, QUOTE, PROFILES } from '../consts';
+import SectionHead from './SectionHead.astro';
+
+interface Props {
+  showStory?: boolean;
+}
+const { showStory = true } = Astro.props;
+---
+
+{
+  showStory && (
+    <section class="story section bg-paper">
+      <div class="wrap">
+        <SectionHead title="Our Story: About Huerta's Painting" />
+        <div class="mt-12 grid gap-10 md:grid-cols-[1.25fr_1fr] md:gap-14">
+          <div class="reveal">
+            <h3 class="h3 text-heading">Apple Valley's Family-Owned Residential Painters</h3>
+            <p class="mt-4 text-body">{ABOUT.lead}</p>
+            <p class="mt-4 text-body">{ABOUT.founderLine}</p>
+          </div>
+          <div class="reveal">
+            <h3 class="h3 text-heading">Why Neighbors Recommend Us</h3>
+            <ul class="mt-4 list-disc space-y-1.5 pl-5 text-body marker:text-link">
+              <li>Nextdoor Neighborhood Fave, 2021–2025</li>
+              <li>BBB Accredited Business</li>
+              <li>
+                Reviews on <a href={PROFILES.google} target="_blank" rel="noopener noreferrer" data-profile="google" class="text-link hover:underline">Google</a>,
+                <a href={PROFILES.nextdoor} target="_blank" rel="noopener noreferrer" data-profile="nextdoor" class="text-link hover:underline">Nextdoor</a> and
+                <a href={PROFILES.facebookReviews} target="_blank" rel="noopener noreferrer" data-profile="facebook" class="text-link hover:underline">Facebook</a>
+              </li>
+              <li>300+ projects completed across the South Metro</li>
+              <li>Fully registered and insured</li>
+              <li>Guaranteed workmanship</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+  )
+}
+
+<section class="founder section bg-surface">
+  <div class="wrap grid items-center gap-10 md:grid-cols-2 md:gap-14">
+    <div class="reveal">
+      <Image
+        src={IMAGES.pedro.src}
+        alt={IMAGES.pedro.alt}
+        widths={[376, 752]}
+        sizes="(min-width: 768px) 28rem, 100vw"
+        loading="lazy"
+        class="founder-photo mx-auto aspect-[4/5] w-full max-w-[28rem] object-cover object-top shadow-[0_24px_40px_-24px_rgba(0,0,0,0.45)]"
+      />
+    </div>
+    <div>
+      <h2 class="reveal h2">Meet Our Founder</h2>
+      <p class="reveal mt-3 font-display text-[1.3rem] font-semibold text-heading">{QUOTE.author}</p>
+      <p class="reveal mt-5 text-body">
+        Pedro founded Huerta's Painting in 2018 and still personally oversees each project — from the first walkthrough
+        and measurements to the final clean-up. He takes calls and texts on the same number, so you always know who to
+        reach.
+      </p>
+      <blockquote class="reveal founder-quote mt-6 border-l-4 border-primary pl-5 text-[1.1rem] italic leading-[1.6] text-ink">
+        “{QUOTE.text}”
+      </blockquote>
+      <div class="reveal mt-8 flex flex-wrap gap-3">
+        <a href="/about/" class="btn btn-outline">More About Us</a>
+      </div>
+    </div>
+  </div>
+</section>

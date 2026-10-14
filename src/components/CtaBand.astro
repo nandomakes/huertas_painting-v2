@@ -1,0 +1,25 @@
+---
+// Reference closing band: solid orange, white title + one-liner on the
+// left, a navy "Schedule" button and a white "Call or Text" button.
+import { CONTACT } from '../consts';
+
+interface Props {
+  title?: string;
+  text?: string;
+}
+const {
+  title = 'Ready to love your home again?',
+  text = 'Free in-home estimate, a custom quote, and a family-owned team that treats your home like their own.',
+} = Astro.props;
+---
+
+<section class="cta-band bg-primary text-onPrimary">
+  <div class="wrap py-12 md:py-14">
+    <h2 class="reveal font-display text-[clamp(1.6rem,1.2rem+1.4vw,2rem)] font-semibold leading-tight">{title}</h2>
+    <p class="reveal mt-2 max-w-[36rem] text-[0.95rem] font-medium leading-relaxed opacity-95">{text}</p>
+    <div class="reveal mt-7 flex flex-wrap gap-3">
+      <a href="#estimate" class="btn btn-dark">Schedule a Free Estimate</a>
+      <a href={`tel:${CONTACT.phoneTel}`} class="btn btn-light">Call or Text {CONTACT.phoneDisplay}</a>
+    </div>
+  </div>
+</section>

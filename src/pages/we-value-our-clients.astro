@@ -1,0 +1,36 @@
+---
+// Review funnel, step 1 — same URL and flow as the WordPress site:
+// 👍 → /thanks-for-responding/ (leave a review on Google, Facebook or Nextdoor)
+// 👎 → /thanks-for-your-feedback/ (send a private message to Pedro)
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import FunnelShell from '../components/FunnelShell.astro';
+import Footer from '../components/Footer.astro';
+import CallFab from '../components/CallFab.astro';
+import Icon from '../components/Icon.astro';
+import { REVIEW_FUNNEL } from '../consts';
+---
+
+<Layout title="We Value Our Clients | Huerta's Painting" description="Tell us how your painting project went." noindex>
+  <Header />
+  <main id="content">
+    <FunnelShell title="We Value Our Clients" sub="Please take a moment to review your experience with us. Your feedback is important.">
+      <div class="mx-auto mt-10 grid max-w-[34rem] gap-4 sm:grid-cols-2">
+        <a href={REVIEW_FUNNEL.positive} class="funnel-choice group flex flex-col items-center gap-4 rounded-card border-2 border-line bg-paper px-6 py-8 transition-colors hover:border-primary">
+          <span class="funnel-thumb flex h-20 w-20 items-center justify-center rounded-full bg-primary text-onPrimary transition-transform group-hover:-translate-y-1">
+            <Icon name="thumbUp" size={40} stroke={1.8} />
+          </span>
+          <span class="font-display text-[1.1rem] font-semibold text-ink">I had a good experience</span>
+        </a>
+        <a href={REVIEW_FUNNEL.negative} class="funnel-choice group flex flex-col items-center gap-4 rounded-card border-2 border-line bg-paper px-6 py-8 transition-colors hover:border-secondary">
+          <span class="funnel-thumb-down flex h-20 w-20 items-center justify-center rounded-full bg-secondary text-paper transition-transform group-hover:translate-y-1">
+            <Icon name="thumbDown" size={40} stroke={1.8} />
+          </span>
+          <span class="font-display text-[1.1rem] font-semibold text-ink">I had a bad experience</span>
+        </a>
+      </div>
+    </FunnelShell>
+  </main>
+  <Footer />
+  <CallFab />
+</Layout>

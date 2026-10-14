@@ -1,0 +1,47 @@
+---
+// Reference "Interior & Exterior Painting, Done in 2–4 Days": photo left,
+// title + icon checklist + CTA right. Every line is a fact from the live site.
+import { Image } from 'astro:assets';
+import { IMAGES } from '../consts';
+import Icon from './Icon.astro';
+
+const points = [
+  { icon: 'clipboard', text: 'Free in-home consultation and a custom quote' },
+  { icon: 'roller', text: 'Interior, exterior, drywall, ceilings and decks' },
+  { icon: 'user', text: 'Founder Pedro personally oversees every project' },
+  { icon: 'clean', text: 'Floors and furnishings protected, full clean-up' },
+  { icon: 'shield', text: 'Fully registered and insured Minnesota LLC' },
+  { icon: 'badge', text: 'Guaranteed workmanship, 100% satisfaction' },
+];
+---
+
+<section class="intro section bg-paper">
+  <div class="wrap grid items-center gap-10 md:grid-cols-[0.9fr_1.1fr] md:gap-14">
+    <div class="reveal intro-media">
+      <Image
+        src={IMAGES.pedro2.src}
+        alt={IMAGES.pedro2.alt}
+        widths={[376, 752]}
+        sizes="(min-width: 768px) 26rem, 100vw"
+        loading="lazy"
+        class="aspect-[4/4.4] w-full object-cover object-top"
+      />
+    </div>
+    <div>
+      <h2 class="reveal h2">Interior &amp; Exterior Painting, Done Right the First Time</h2>
+      <ul class="mt-7 space-y-4">
+        {
+          points.map((p) => (
+            <li class="reveal flex items-start gap-3.5 text-[1.02rem] text-body">
+              <Icon name={p.icon} size={24} stroke={2} class="intro-icon mt-0.5 shrink-0 text-link" />
+              {p.text}
+            </li>
+          ))
+        }
+      </ul>
+      <div class="reveal mt-9 flex flex-wrap gap-3">
+        <a href="#estimate" class="btn btn-primary">Schedule Free Estimate <Icon name="calendar" size={18} stroke={1.8} /></a>
+      </div>
+    </div>
+  </div>
+</section>

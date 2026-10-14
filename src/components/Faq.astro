@@ -1,0 +1,44 @@
+---
+import { CONTACT, type Faq as FaqItem } from '../consts';
+import SectionHead from './SectionHead.astro';
+
+interface Props {
+  items: FaqItem[];
+  title?: string;
+  tone?: 'paper' | 'surface';
+}
+const { items, title = 'Frequently Asked Questions', tone = 'paper' } = Astro.props;
+---
+
+<section id="faq" class:list={['faq section', tone === 'paper' ? 'bg-paper' : 'bg-surface']}>
+  <div class="wrap max-w-[52rem]">
+    <SectionHead title={title} />
+    <div class="reveal mt-10 space-y-3" data-accordion>
+      {
+        items.map((f) => (
+          <details class="acc faq-item card overflow-hidden">
+            <summary class="flex cursor-pointer list-none items-center justify-between gap-6 px-6 py-5 text-left [&::-webkit-details-marker]:hidden">
+              <h3 class="font-display text-[1.05rem] font-semibold text-ink">{f.q}</h3>
+              <span class="acc-icon relative h-4 w-4 shrink-0 text-link" aria-hidden="true">
+                <span class="absolute left-0 top-1/2 h-[2px] w-4 -translate-y-1/2 bg-current" />
+                <span class="absolute left-1/2 top-0 h-4 w-[2px] -translate-x-1/2 bg-current" />
+              </span>
+            </summary>
+            <div class="acc-content">
+              <p class="px-6 pb-6 text-[0.95rem] leading-[1.7] text-body">{f.a}</p>
+            </div>
+          </details>
+        ))
+      }
+    </div>
+    <p class="reveal mt-8 text-center text-body">
+      Still have a question? Call or text Pedro at
+      <a href={`tel:${CONTACT.phoneTel}`} class="font-semibold text-link underline underline-offset-4">{CONTACT.phoneDisplay}</a>.
+    </p>
+  </div>
+</section>
+
+<script>
+  import { initAccordions } from '../scripts/accordion';
+  initAccordions();
+</script>

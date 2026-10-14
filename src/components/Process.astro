@@ -1,0 +1,34 @@
+---
+// Reference "Our Simple 4-Step Process": centered title + divider, four
+// columns with a numbered colored title and the copy underneath.
+import { PROCESS } from '../consts';
+import SectionHead from './SectionHead.astro';
+import Icon from './Icon.astro';
+
+interface Props {
+  tone?: 'paper' | 'surface';
+}
+const { tone = 'paper' } = Astro.props;
+const icons = ['calendar', 'clipboard', 'roller', 'home'];
+---
+
+<section id="process" class:list={['process section', tone === 'paper' ? 'bg-paper' : 'bg-surface']}>
+  <div class="wrap">
+    <SectionHead title="Our Simple 4-Step Process" />
+    <ol class="mt-12 grid gap-10 sm:grid-cols-2 lg:grid-cols-4 lg:gap-8">
+      {
+        PROCESS.map((p, i) => (
+          <li class="reveal process-step">
+            <span class="process-icon mb-4 hidden h-12 w-12 items-center justify-center rounded-full" aria-hidden="true">
+              <Icon name={icons[i] ?? 'check'} size={24} stroke={1.8} />
+            </span>
+            <h3 class="h3 text-heading">
+              <span class="process-num">{i + 1})</span> {p.title}
+            </h3>
+            <p class="mt-4 text-[0.98rem] leading-[1.65] text-body">{p.body}</p>
+          </li>
+        ))
+      }
+    </ol>
+  </div>
+</section>

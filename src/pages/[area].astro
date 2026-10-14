@@ -1,0 +1,117 @@
+---
+// City landing pages at the same URLs as the WordPress site
+// (/farmington-house-painting/, /apple-valley-house-painting/,
+// /lakeville-house-painting/, /eagan-house-painting/ …). Kept for local SEO.
+import { Image } from 'astro:assets';
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Hero from '../components/Hero.astro';
+import ServicesGrid from '../components/ServicesGrid.astro';
+import Reviews from '../components/Reviews.astro';
+import Process from '../components/Process.astro';
+import ProfileLinks from '../components/ProfileLinks.astro';
+import CtaBand from '../components/CtaBand.astro';
+import EstimateSection from '../components/EstimateSection.astro';
+import Footer from '../components/Footer.astro';
+import CallFab from '../components/CallFab.astro';
+import Icon from '../components/Icon.astro';
+import { AREA_PAGES, SITE, CONTACT, BACKGROUNDS, type AreaPage } from '../consts';
+
+export function getStaticPaths() {
+  return AREA_PAGES.map((area) => ({ params: { area: area.slug }, props: { area } }));
+}
+
+const { area } = Astro.props as { area: AreaPage };
+const url = `${SITE.url}/${area.slug}/`;
+const trust = [
+  'Free in-home estimates',
+  'Nextdoor Neighborhood Fave 2021–2025',
+  'Fully registered and insured',
+  'High-quality preparation & materials',
+];
+const nearby = AREA_PAGES.filter((a) => a.slug !== area.slug);
+
+const schema = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Service',
+    name: `House Painting in ${area.city}, MN`,
+    serviceType: 'House painting',
+    url,
+    provider: { '@id': `${SITE.url}/#business` },
+    areaServed: { '@type': 'City', name: `${area.city}, MN` },
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: `${SITE.url}/` },
+      { '@type': 'ListItem', position: 2, name: `${area.city} House Painting`, item: url },
+    ],
+  },
+];
+---
+
+<Layout title={area.seoTitle} description={area.seoDescription} schema={schema}>
+  <Header />
+  <main id="content">
+    <Hero
+      variant="page"
+      eyebrow={`${area.city}, Minnesota`}
+      title={area.h1}
+      sub={area.intro}
+      image={BACKGROUNDS.areas[area.slug]}
+      imageAlt={`Home in ${area.city}, MN`}
+      focus="50% 50%"
+      crumbs={[{ href: '/', label: 'Home' }, { label: `${area.city}, MN` }]}
+    />
+
+    <section class="section bg-paper">
+      <div class="wrap grid items-center gap-10 md:grid-cols-[1.1fr_0.9fr] md:gap-14">
+        <div>
+          <h2 class="reveal h2">{area.h2}</h2>
+          <p class="reveal mt-6 text-body">
+            Our reputation for excellence and our five-star reviews show that we deliver expert results with outstanding
+            customer service every time. Call us today and we will give your {area.city}, MN home a free quote.
+          </p>
+          <ul class="reveal mt-7 grid gap-3 sm:grid-cols-2">
+            {
+              trust.map((t) => (
+                <li class="flex items-start gap-3 font-medium text-ink">
+                  <Icon name="check" size={22} stroke={2.4} class="mt-0.5 shrink-0 text-link" />
+                  {t}
+                </li>
+              ))
+            }
+          </ul>
+          <div class="reveal mt-8 flex flex-wrap gap-3">
+            <a href="#estimate" class="btn btn-primary">Schedule Free Estimate</a>
+            <a href={`tel:${CONTACT.phoneTel}`} class="btn btn-outline">Call {CONTACT.phoneDisplay}</a>
+          </div>
+          <ProfileLinks class="reveal mt-8" />
+        </div>
+        <div class="reveal">
+          <Image src={area.image} alt={`House painting in ${area.city}, MN by Huerta's Painting`} widths={[400, 700]} sizes="(min-width: 768px) 40vw, 100vw" class="area-photo aspect-[4/5] w-full rounded-card object-cover" />
+        </div>
+      </div>
+    </section>
+
+    <ServicesGrid title={`Painting Services in ${area.city}, MN`} />
+    <Reviews title={`What Our ${area.city}-Area Clients Say`} />
+    <Process />
+
+    <section class="section bg-surface">
+      <div class="wrap text-center">
+        <h2 class="reveal h2">Also Serving Nearby Cities</h2>
+        <ul class="reveal mt-8 flex flex-wrap justify-center gap-2.5">
+          {nearby.map((a) => <li><a href={`/${a.slug}/`} class="chip !bg-paper">{a.city} House Painting</a></li>)}
+        </ul>
+      </div>
+    </section>
+
+    <EstimateSection title={`Free Painting Estimate in ${area.city}`} />
+    <CtaBand title={`Ready to refresh your ${area.city} home?`} text={`Call us today and we will give your ${area.city}, MN home a free quote.`} />
+  </main>
+  <Footer />
+  <CallFab />
+</Layout>

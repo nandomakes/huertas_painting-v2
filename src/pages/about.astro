@@ -1,0 +1,104 @@
+---
+import { Image } from 'astro:assets';
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Hero from '../components/Hero.astro';
+import Story from '../components/Story.astro';
+import Process from '../components/Process.astro';
+import Reviews from '../components/Reviews.astro';
+import Glance from '../components/Glance.astro';
+import CtaBand from '../components/CtaBand.astro';
+import EstimateSection from '../components/EstimateSection.astro';
+import Footer from '../components/Footer.astro';
+import CallFab from '../components/CallFab.astro';
+import Icon from '../components/Icon.astro';
+import { SITE, IMAGES, APART, STATS, BACKGROUNDS } from '../consts';
+
+const title = "About Huerta's Painting | Family-Owned Painters, Apple Valley";
+const description =
+  "Huerta's Painting is a family-owned painting business in Apple Valley, MN, founded in 2018 by Pedro Ramirez-Huerta. Fully registered and insured.";
+
+const schema = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: `${SITE.url}/` },
+      { '@type': 'ListItem', position: 2, name: 'About', item: `${SITE.url}/about/` },
+    ],
+  },
+];
+---
+
+<Layout title={title} description={description} schema={schema}>
+  <Header />
+  <main id="content">
+    <Hero
+      variant="page"
+      eyebrow="About Huerta's Painting"
+      title="Residential Painting Services You Can Trust"
+      sub="We are a locally and family-owned business based in Apple Valley, MN, treating every home like it is our own."
+      image={BACKGROUNDS.about}
+      imageAlt="Freshly painted home in the Twin Cities"
+      focus="50% 50%"
+      crumbs={[{ href: '/', label: 'Home' }, { label: 'About' }]}
+    />
+
+    <Story />
+
+    <!-- Stats -->
+    <section class="stats bg-secondary text-paper">
+      <dl class="wrap grid grid-cols-2 gap-y-8 py-12 md:grid-cols-4">
+        {
+          STATS.map((s) => (
+            <div class="reveal text-center">
+              <dt class="sr-only">{s.label}</dt>
+              <dd class="font-display text-[clamp(2.2rem,1.6rem+2.4vw,3rem)] font-bold leading-none text-primary">
+                {s.value}{s.suffix}
+              </dd>
+              <dd class="mt-2 text-[0.85rem] font-medium uppercase tracking-[0.12em] text-paper/80" aria-hidden="true">{s.label}</dd>
+            </div>
+          ))
+        }
+      </dl>
+    </section>
+
+    <!-- What sets us apart -->
+    <section class="section bg-paper">
+      <div class="wrap grid items-center gap-12 md:grid-cols-[1fr_0.7fr]">
+        <div>
+          <h2 class="reveal h2">What Sets Us Apart</h2>
+          <p class="reveal mt-6 text-body">
+            As professional painters, we bring so much expertise to a project. Not only do we work with the right tools and
+            the best products, we also do all the prep and clean up afterward. When you choose Huerta's Painting, you take
+            advantage of our mastery of our craft.
+          </p>
+          <div class="mt-9 space-y-7">
+            {
+              APART.map((a) => (
+                <div class="reveal flex gap-4">
+                  <Icon name="check" size={26} stroke={2.4} class="mt-0.5 shrink-0 text-primary" />
+                  <div>
+                    <h3 class="h3 text-ink">{a.title}</h3>
+                    <p class="mt-2 text-body">{a.body}</p>
+                  </div>
+                </div>
+              ))
+            }
+          </div>
+        </div>
+        <div class="reveal hidden md:block">
+          <Image src={IMAGES.ladder.src} alt={IMAGES.ladder.alt} widths={[400, 550]} sizes="30vw" loading="lazy" class="mx-auto h-auto w-full max-w-[320px]" />
+        </div>
+      </div>
+    </section>
+
+    <Process tone="surface" />
+    <Reviews tone="paper" />
+    <Glance />
+    <EstimateSection />
+    <CtaBand />
+  </main>
+  <Footer />
+  <CallFab />
+</Layout>

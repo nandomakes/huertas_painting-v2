@@ -1,0 +1,50 @@
+---
+// Review funnel, 👍 branch: the three review sites (same links as the live
+// WordPress page). Each opens the platform's own review form.
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import FunnelShell from '../components/FunnelShell.astro';
+import Footer from '../components/Footer.astro';
+import CallFab from '../components/CallFab.astro';
+import BrandIcon from '../components/BrandIcon.astro';
+import { PROFILES, REVIEW_FUNNEL } from '../consts';
+
+const sites = [
+  { key: 'google', name: 'Google', href: PROFILES.googleWriteReview },
+  { key: 'facebook', name: 'Facebook', href: PROFILES.facebookReviews },
+  { key: 'nextdoor', name: 'Nextdoor', href: PROFILES.nextdoorRecommend },
+] as const;
+---
+
+<Layout title="Thanks for Your Review | Huerta's Painting" description="Share a review of Huerta's Painting on Google, Facebook or Nextdoor." noindex>
+  <Header />
+  <main id="content">
+    <FunnelShell title="Thank You! We Need Your Help." sub="Would you share a review on one of these sites? It helps other South Metro homeowners find us.">
+      <ul class="mx-auto mt-10 grid max-w-[36rem] gap-4 sm:grid-cols-3">
+        {
+          sites.map((s) => (
+            <li>
+              <a
+                href={s.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                data-profile={`review-${s.key}`}
+                class="review-site flex h-full flex-col items-center gap-3 rounded-card border-2 border-line bg-paper px-4 py-7 transition-[border-color,transform] hover:-translate-y-1 hover:border-primary"
+              >
+                <BrandIcon name={s.key} size={48} />
+                <span class="font-display text-[1.05rem] font-semibold text-ink">Review on {s.name}</span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+      <p class="mx-auto mt-8 max-w-[30rem] text-[0.88rem] italic text-muted">
+        *Each of these platforms will require you to sign in to leave a review. If you do not have an account, you will
+        be prompted to create one.
+      </p>
+      <a href={REVIEW_FUNNEL.start} class="link-arrow mt-6">← Back</a>
+    </FunnelShell>
+  </main>
+  <Footer />
+  <CallFab />
+</Layout>

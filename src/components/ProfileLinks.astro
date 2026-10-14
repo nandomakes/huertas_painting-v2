@@ -1,0 +1,45 @@
+---
+// Buttons that take visitors to Huerta's Google Business, Nextdoor and
+// Facebook pages. The client wants people to read the reviews THERE — the
+// rating itself is never printed on the site.
+import { PROFILES } from '../consts';
+import BrandIcon from './BrandIcon.astro';
+import Icon from './Icon.astro';
+
+interface Props {
+  /** `reviews` → "Read our reviews on…", `follow` → plain profile links. */
+  mode?: 'reviews' | 'follow';
+  tone?: 'light' | 'dark';
+  class?: string;
+}
+const { mode = 'reviews', tone = 'light', class: className = '' } = Astro.props;
+
+const links = [
+  { key: 'google', name: 'Google', href: PROFILES.google, label: mode === 'reviews' ? 'Read our reviews on Google' : 'Google Business Profile' },
+  { key: 'nextdoor', name: 'Nextdoor', href: PROFILES.nextdoor, label: mode === 'reviews' ? 'Recommended on Nextdoor' : 'Nextdoor' },
+  { key: 'facebook', name: 'Facebook', href: mode === 'reviews' ? PROFILES.facebookReviews : PROFILES.facebook, label: mode === 'reviews' ? 'Reviews on Facebook' : 'Facebook' },
+] as const;
+---
+
+<ul class:list={['profile-links flex flex-wrap gap-3', className]}>
+  {
+    links.map((l) => (
+      <li>
+        <a
+          href={l.href}
+          target="_blank"
+          rel="noopener noreferrer"
+          data-profile={l.key}
+          class:list={[
+            'profile-link inline-flex items-center gap-3 rounded-btn border py-2.5 pl-3 pr-4 font-display text-[0.92rem] font-semibold transition-colors duration-200',
+            tone === 'dark' ? 'border-paper/25 bg-paper/5 text-paper hover:border-primary hover:bg-paper/10' : 'border-line bg-paper text-ink hover:border-primary',
+          ]}
+        >
+          <BrandIcon name={l.key} size={24} />
+          {l.label}
+          <Icon name="external" size={14} stroke={2} class="opacity-60" />
+        </a>
+      </li>
+    ))
+  }
+</ul>

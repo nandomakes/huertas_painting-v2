@@ -1,0 +1,53 @@
+---
+// Reference services grid: centered title + divider, 3×2 photo cards
+// (photo, title, two-line pitch, "Learn more →"), extra services line and
+// an outlined "See all services" button.
+import { Image } from 'astro:assets';
+import { SERVICES } from '../consts';
+import SectionHead from './SectionHead.astro';
+
+interface Props {
+  title?: string;
+  exclude?: string;
+}
+const { title = 'Our South Metro House Painting Services', exclude } = Astro.props;
+const items = SERVICES.filter((s) => s.slug !== exclude);
+---
+
+<section id="services" class="services section bg-paper">
+  <div class="wrap">
+    <SectionHead title={title} />
+    <ul class="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3 lg:gap-7">
+      {
+        items.map((s) => (
+          <li class="reveal">
+            <a href={`/services/${s.slug}/`} class="service-card card zoom-parent lift group flex h-full flex-col overflow-hidden">
+              <span class="block overflow-hidden">
+                <Image
+                  src={s.image}
+                  alt={`${s.name} by Huerta's Painting`}
+                  widths={[400, 590]}
+                  sizes="(min-width: 1024px) 21rem, (min-width: 640px) 50vw, 100vw"
+                  loading="lazy"
+                  class="zoom-img aspect-[3/2] w-full object-cover"
+                />
+              </span>
+              <span class="flex flex-1 flex-col items-center px-6 pb-7 pt-5 text-center">
+                <h3 class="h3 text-heading">{s.name}</h3>
+                <p class="mt-3 flex-1 text-[0.95rem] leading-[1.6] text-body">{s.short}</p>
+                <span class="link-arrow mt-4">Learn more →</span>
+              </span>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+    <p class="reveal mx-auto mt-10 max-w-[48rem] text-center text-body">
+      Also on the same quote: cabinet painting, trim and stair railings, popcorn ceiling removal, wood staining and
+      porch refinishing.
+    </p>
+    <div class="reveal mt-6 text-center">
+      <a href="/services/" class="btn btn-outline">See All Services →</a>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,99 @@
+---
+import { Image } from 'astro:assets';
+import Layout from '../../layouts/Layout.astro';
+import Header from '../../components/Header.astro';
+import Hero from '../../components/Hero.astro';
+import Guarantees from '../../components/Guarantees.astro';
+import Process from '../../components/Process.astro';
+import Reviews from '../../components/Reviews.astro';
+import ServicesGrid from '../../components/ServicesGrid.astro';
+import CtaBand from '../../components/CtaBand.astro';
+import EstimateSection from '../../components/EstimateSection.astro';
+import Footer from '../../components/Footer.astro';
+import CallFab from '../../components/CallFab.astro';
+import Icon from '../../components/Icon.astro';
+import { SERVICES, SITE, AREAS, BACKGROUNDS, type Service } from '../../consts';
+
+export function getStaticPaths() {
+  return SERVICES.map((service) => ({ params: { slug: service.slug }, props: { service } }));
+}
+
+const { service } = Astro.props as { service: Service };
+const url = `${SITE.url}/services/${service.slug}/`;
+
+const schema = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Service',
+    name: service.name,
+    serviceType: service.name,
+    description: service.intro,
+    url,
+    provider: { '@id': `${SITE.url}/#business` },
+    areaServed: AREAS.map((a) => ({ '@type': 'City', name: `${a}, MN` })),
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: `${SITE.url}/` },
+      { '@type': 'ListItem', position: 2, name: 'Services', item: `${SITE.url}/services/` },
+      { '@type': 'ListItem', position: 3, name: service.name, item: url },
+    ],
+  },
+];
+---
+
+<Layout title={service.seoTitle} description={service.seoDescription} schema={schema}>
+  <Header />
+  <main id="content">
+    <Hero
+      variant="page"
+      eyebrow="Residential painting services"
+      title={`${service.name} in Apple Valley, MN`}
+      sub={service.short}
+      image={BACKGROUNDS.serviceHeroes[service.slug]}
+      imageAlt={`${service.name} project`}
+      focus="50% 50%"
+      crumbs={[{ href: '/', label: 'Home' }, { href: '/services/', label: 'Services' }, { label: service.name }]}
+    />
+
+    <section class="section bg-paper">
+      <div class="wrap grid items-center gap-10 md:grid-cols-[1.1fr_0.9fr] md:gap-14">
+        <div>
+          <h2 class="reveal h2">Professional {service.name}, Done Right</h2>
+          <p class="reveal mt-6 text-body">{service.intro}</p>
+          <p class="reveal mt-6 font-semibold text-ink">{service.bulletsLead}</p>
+          <ul class="reveal mt-4 space-y-3">
+            {
+              service.bullets.map((b) => (
+                <li class="flex gap-3">
+                  <Icon name="check" size={22} stroke={2.4} class="mt-0.5 shrink-0 text-link" />
+                  <span class="text-body">{b}</span>
+                </li>
+              ))
+            }
+          </ul>
+          <div class="reveal mt-9 flex flex-wrap gap-3">
+            <a href="#estimate" class="btn btn-primary">Schedule Free Estimate</a>
+            <a href="/gallery/" class="btn btn-outline">See Our Work</a>
+          </div>
+        </div>
+        <div class="reveal grid gap-4">
+          <Image src={service.image2} alt={`${service.name} project by Huerta's Painting`} widths={[480, 590]} sizes="(min-width: 768px) 28rem, 100vw" loading="lazy" class="aspect-[59/40] w-full rounded-card object-cover" />
+          <Image src={service.image} alt={`${service.name} in Apple Valley, MN`} widths={[480, 590]} sizes="(min-width: 768px) 28rem, 100vw" loading="lazy" class="aspect-[59/40] w-full rounded-card object-cover" />
+        </div>
+      </div>
+    </section>
+
+    <Guarantees />
+    <div class="h-14 bg-surface md:h-[4.5rem]"></div>
+    <Process />
+    <Reviews />
+    <ServicesGrid title="More Ways We Can Help" exclude={service.slug} />
+    <EstimateSection service={service.name} title={`Get a Free ${service.name} Estimate`} tone="surface" />
+    <CtaBand />
+  </main>
+  <Footer />
+  <CallFab />
+</Layout>

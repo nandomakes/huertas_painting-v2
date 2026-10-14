@@ -1,0 +1,110 @@
+---
+import { Image } from 'astro:assets';
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Hero from '../components/Hero.astro';
+import SectionHead from '../components/SectionHead.astro';
+import CtaBand from '../components/CtaBand.astro';
+import EstimateSection from '../components/EstimateSection.astro';
+import Footer from '../components/Footer.astro';
+import CallFab from '../components/CallFab.astro';
+import { GALLERY, SITE, BACKGROUNDS } from '../consts';
+
+const title = "Before & After Painting Gallery | Huerta's Painting";
+const description =
+  "Real before & after photos of interior painting, exterior painting, ceiling repair and deck refinishing by Huerta's Painting in the South Metro.";
+
+const schema = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: `${SITE.url}/` },
+      { '@type': 'ListItem', position: 2, name: 'Gallery', item: `${SITE.url}/gallery/` },
+    ],
+  },
+];
+---
+
+<Layout title={title} description={description} schema={schema}>
+  <Header />
+  <main id="content">
+    <Hero
+      variant="page"
+      eyebrow="Before & after photos"
+      title="Experience the Quality of Professional Painting"
+      sub="Transform your home with Huerta's Painting's expert interior and exterior services."
+      image={BACKGROUNDS.gallery}
+      imageAlt="Living room with fresh paint"
+      focus="50% 50%"
+      crumbs={[{ href: '/', label: 'Home' }, { label: 'Gallery' }]}
+    />
+
+    <section class="section bg-paper">
+      <div class="wrap">
+        <SectionHead
+          title="Before & After"
+          sub="Huerta's Painting LLC prides itself on fair estimates and timely completion. We treat every home as our own."
+        />
+        <ul class="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {
+            GALLERY.map((g, i) => (
+              <li class="reveal">
+                <button type="button" class="gallery-item card zoom-parent group block w-full overflow-hidden text-left" data-lightbox={i} aria-label={`Enlarge: ${g.label}`}>
+                  <span class="block overflow-hidden">
+                    <Image
+                      src={g.src}
+                      alt={g.alt}
+                      widths={[400, 800]}
+                      sizes="(min-width: 1024px) 22rem, (min-width: 640px) 50vw, 100vw"
+                      loading={i < 3 ? 'eager' : 'lazy'}
+                      class="zoom-img aspect-[800/540] w-full object-cover"
+                    />
+                  </span>
+                  <span class="block px-5 py-4 font-display font-semibold text-ink" data-caption>{g.label}</span>
+                </button>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </section>
+
+    <dialog id="lightbox" class="m-auto max-h-[92vh] w-[min(1000px,94vw)] bg-transparent p-0 backdrop:bg-black/85">
+      <figure class="relative">
+        <img id="lightbox-img" src="" alt="" class="max-h-[80vh] w-full rounded-card object-contain" />
+        <figcaption id="lightbox-cap" class="mt-3 text-center font-semibold text-paper"></figcaption>
+        <button type="button" data-close class="absolute -top-3 right-0 flex h-11 w-11 items-center justify-center rounded-full bg-primary text-onPrimary" aria-label="Close">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" /></svg>
+        </button>
+      </figure>
+    </dialog>
+
+    <EstimateSection title="Get Started With Your Free Estimate" tone="surface" />
+    <CtaBand />
+  </main>
+  <Footer />
+  <CallFab />
+</Layout>
+
+<script>
+  const dlg = document.getElementById('lightbox') as HTMLDialogElement | null;
+  const img = document.getElementById('lightbox-img') as HTMLImageElement | null;
+  const cap = document.getElementById('lightbox-cap');
+  if (dlg && img && cap) {
+    document.querySelectorAll<HTMLButtonElement>('[data-lightbox]').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const thumb = btn.querySelector('img');
+        if (!thumb) return;
+        img.src = thumb.currentSrc || thumb.src;
+        img.alt = thumb.alt;
+        cap.textContent = btn.querySelector('[data-caption]')?.textContent?.trim() ?? '';
+        dlg.showModal();
+      });
+    });
+    dlg.querySelector('[data-close]')?.addEventListener('click', () => dlg.close());
+    dlg.addEventListener('click', (e) => {
+      if (e.target === dlg) dlg.close();
+    });
+  }
+</script>

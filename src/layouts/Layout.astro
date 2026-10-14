@@ -1,0 +1,209 @@
+---
+import { preloadFont } from '../styles/fonts';
+import '../styles/global.css';
+import { SITE, CONTACT, PHONE_TEL, SERVICES, SOCIALS, PROFILES, AREAS, GA4_ID } from '../consts';
+
+interface Props {
+  title?: string;
+  description?: string;
+  /** Keep this page out of the index (404, review funnel). */
+  noindex?: boolean;
+  /** Extra JSON-LD nodes for this page (BreadcrumbList, FAQPage, …). */
+  schema?: unknown[];
+}
+
+const {
+  title = SITE.title,
+  description = SITE.description,
+  noindex = false,
+  schema = [],
+} = Astro.props;
+
+const site = Astro.site ?? new URL(SITE.url);
+const canonical = new URL(Astro.url.pathname, site).href;
+const ogImage = new URL('/og-image.jpg', site).href;
+
+// JSON-LD: local house painter in Apple Valley, MN. No aggregateRating —
+// the client asked for the star rating not to be published on the site.
+const business = {
+  '@context': 'https://schema.org',
+  '@type': 'HousePainter',
+  '@id': `${SITE.url}/#business`,
+  name: SITE.brand,
+  description: SITE.description,
+  url: SITE.url,
+  image: ogImage,
+  logo: new URL('/favicon-512.png', site).href,
+  telephone: PHONE_TEL,
+  email: CONTACT.email,
+  founder: { '@type': 'Person', name: SITE.founder },
+  foundingDate: SITE.founded,
+  address: {
+    '@type': 'PostalAddress',
+    addressLocality: CONTACT.locality,
+    addressRegion: CONTACT.region,
+    addressCountry: 'US',
+  },
+  geo: { '@type': 'GeoCoordinates', latitude: CONTACT.geo.lat, longitude: CONTACT.geo.lng },
+  areaServed: AREAS.map((a) => ({ '@type': 'City', name: `${a}, MN` })),
+  sameAs: [...SOCIALS.map((s) => s.href), PROFILES.bbb],
+  hasOfferCatalog: {
+    '@type': 'OfferCatalog',
+    name: 'Painting services',
+    itemListElement: SERVICES.map((s) => ({
+      '@type': 'Offer',
+      itemOffered: { '@type': 'Service', name: s.name, url: `${SITE.url}/services/${s.slug}/` },
+    })),
+  },
+};
+
+const website = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  '@id': `${SITE.url}/#website`,
+  url: SITE.url,
+  name: SITE.brand,
+  publisher: { '@id': `${SITE.url}/#business` },
+  inLanguage: 'en-US',
+};
+
+const jsonLdNodes = [business, website, ...schema];
+
+// GA4 — empty ID in consts means no tag. PUBLIC_GA4_ID overrides it.
+const ga4Id = import.meta.env.PUBLIC_GA4_ID ?? GA4_ID;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preload" as="font" type="font/woff2" href={preloadFont} crossorigin="anonymous" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
+    <link rel="icon" type="image/png" sizes="512x512" href="/favicon-512.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/favicon-180.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    {!noindex && <link rel="canonical" href={canonical} />}
+    <meta name="generator" content={Astro.generator} />
+
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="author" content={SITE.brand} />
+    {noindex && <meta name="robots" content="noindex, follow" />}
+    <meta name="theme-color" content={SITE.themeColor} />
+    <meta name="geo.region" content="US-MN" />
+    <meta name="geo.placename" content="Apple Valley" />
+    <meta name="geo.position" content={`${CONTACT.geo.lat};${CONTACT.geo.lng}`} />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:site_name" content={SITE.brand} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:alt" content={`${SITE.name} — ${SITE.role} in ${SITE.city}`} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+
+    {jsonLdNodes.map((node) => <script is:inline type="application/ld+json" set:html={JSON.stringify(node)} />)}
+
+    {
+      ga4Id && (
+        <>
+          <script is:inline async src={`https://www.googletagmanager.com/gtag/js?id=${ga4Id}`} />
+          <script is:inline define:vars={{ ga4Id }}>
+            window.dataLayer = window.dataLayer || [];
+            window.gtag = function gtag() {
+              dataLayer.push(arguments);
+            };
+            gtag('js', new Date());
+            gtag('config', ga4Id);
+
+            // Conversions: calls, texts, estimate CTAs and review-profile clicks.
+            document.addEventListener('click', (e) => {
+              const a = e.target.closest('a');
+              if (!a) return;
+              if (a.href.startsWith('tel:')) {
+                gtag('event', 'phone_call_click', { link_url: a.href });
+              } else if (a.href.startsWith('sms:')) {
+                gtag('event', 'text_message_click', { link_url: a.href });
+              } else if (a.getAttribute('href')?.includes('#estimate')) {
+                gtag('event', 'quote_cta_click', { link_text: a.textContent.trim() });
+              } else if (a.dataset.profile) {
+                gtag('event', 'profile_click', { profile: a.dataset.profile });
+              }
+            });
+          </script>
+        </>
+      )
+    }
+
+    <script is:inline>
+      document.documentElement.setAttribute('data-reveal', '');
+    </script>
+  </head>
+  <body class="bg-paper font-sans text-base leading-[1.7] text-body">
+    <a
+      href="#content"
+      class="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-[100] focus:rounded focus:bg-primary focus:px-4 focus:py-2 focus:font-bold focus:text-onPrimary"
+    >
+      Skip to content
+    </a>
+    <slot />
+
+    <script>
+      // Pages without the estimate form (review funnel) send "#estimate"
+      // buttons to the contact page instead.
+      if (!document.getElementById('estimate')) {
+        document.querySelectorAll<HTMLAnchorElement>('a[href="#estimate"]').forEach((a) => (a.href = '/contact-us/#estimate'));
+      }
+
+      // Reveal on scroll (CSS respects reduced motion).
+      const reveals = document.querySelectorAll<HTMLElement>('.reveal');
+      reveals.forEach((el) => {
+        const siblings = el.parentElement
+          ? Array.from(el.parentElement.children).filter((c) => c.classList.contains('reveal'))
+          : [el];
+        el.style.setProperty('--reveal-i', String(Math.min(siblings.indexOf(el), 6)));
+      });
+      const io = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((e) => {
+            if (e.isIntersecting) {
+              e.target.classList.add('in');
+              io.unobserve(e.target);
+            }
+          });
+        },
+        { threshold: 0.08, rootMargin: '0px 0px -6% 0px' }
+      );
+      reveals.forEach((el) => io.observe(el));
+
+      // Snap carousels: prev/next scroll one card; disabled at the ends.
+      document.querySelectorAll<HTMLElement>('[data-carousel]').forEach((root) => {
+        const track = root.querySelector<HTMLElement>('[data-track]');
+        const prev = root.querySelector<HTMLButtonElement>('[data-prev]');
+        const next = root.querySelector<HTMLButtonElement>('[data-next]');
+        if (!track) return;
+        const step = () => {
+          const card = track.firstElementChild as HTMLElement | null;
+          const gap = parseFloat(getComputedStyle(track).columnGap) || 0;
+          return card ? card.offsetWidth + gap : track.clientWidth;
+        };
+        const sync = () => {
+          const max = track.scrollWidth - track.clientWidth - 2;
+          if (prev) prev.disabled = track.scrollLeft <= 2;
+          if (next) next.disabled = track.scrollLeft >= max;
+        };
+        prev?.addEventListener('click', () => track.scrollBy({ left: -step() }));
+        next?.addEventListener('click', () => track.scrollBy({ left: step() }));
+        track.addEventListener('scroll', sync, { passive: true });
+        window.addEventListener('resize', sync);
+        sync();
+      });
+    </script>
+  </body>
+</html>
