@@ -34,7 +34,7 @@ const home = variant === 'home';
 
 <section class:list={['hero relative bg-secondary text-paper', home ? 'hero-home' : 'hero-page']}>
   <!-- Photo: full-width on top on mobile, right ~60% on desktop. -->
-  <div class:list={['relative overflow-hidden lg:absolute lg:inset-y-0 lg:right-0 lg:w-[60%]', home ? 'aspect-[1178/624] lg:aspect-auto' : 'aspect-[16/8] lg:aspect-auto']}>
+  <div class:list={['relative overflow-hidden lg:absolute lg:inset-y-0 lg:right-0 lg:w-[54%] xl:w-[60%]', home ? 'aspect-[1178/624] lg:aspect-auto' : 'aspect-[16/8] lg:aspect-auto']}>
     <Picture
       src={image}
       alt={imageAlt}
@@ -50,7 +50,7 @@ const home = variant === 'home';
   <div class="hero-fade pointer-events-none absolute inset-0 hidden lg:block" aria-hidden="true"></div>
 
   <div class:list={['wrap relative', home ? 'pb-10 pt-10 lg:min-h-[38rem] lg:pb-20 lg:pt-20' : 'py-10 lg:min-h-[26rem] lg:py-20']}>
-    <div class="max-w-[35rem]">
+    <div class="max-w-[35rem] lg:max-w-[28.5rem] xl:max-w-[35rem]">
       {
         crumbs.length > 0 && (
           <nav class="reveal mb-5 text-[0.82rem] font-medium text-paper/75" aria-label="Breadcrumb">
@@ -63,7 +63,7 @@ const home = variant === 'home';
           </nav>
         )
       }
-      {eyebrow && <p class="hero-eyebrow reveal eyebrow text-primary">{eyebrow}</p>}
+      {eyebrow && <p class="hero-eyebrow reveal eyebrow text-primary max-sm:text-[0.74rem] max-sm:tracking-[0.08em]">{eyebrow}</p>}
       {home ? <h1 class="reveal h-hero mt-4">{title}</h1> : <h1 class="reveal h-hero mt-4 !text-[clamp(2rem,1.3rem+2.4vw,3rem)]">{title}</h1>}
       {sub && <p class="reveal lead mt-6 text-paper/90">{sub}</p>}
 
@@ -74,7 +74,7 @@ const home = variant === 'home';
           </span>
           <span class="underline decoration-2 underline-offset-[6px] group-hover:text-primary">Call or text {CONTACT.phoneDisplay}</span>
         </a>
-        {!home && <a href="#estimate" class="btn btn-primary">Schedule Free Estimate <Icon name="arrow" size={18} stroke={2} /></a>}
+        {!home && <a href="#estimate" class="btn btn-primary max-sm:w-full">Schedule Free Estimate <Icon name="arrow" size={18} stroke={2} /></a>}
       </div>
 
       {

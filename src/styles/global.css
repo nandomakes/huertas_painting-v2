@@ -305,3 +305,25 @@
     color: theme('colors.primary');
   }
 }
+
+@layer components {
+  /* Small phones (iPhone SE 1st gen, Galaxy Fold): buttons may wrap and use
+     tighter side padding so they never push past the screen edge. */
+  @media (max-width: 399px) {
+    .btn {
+      padding-inline: 1.1rem;
+      white-space: normal;
+      text-align: center;
+    }
+  }
+}
+
+@layer components {
+  /* iPad landscape / small laptops (1024–1279px): the photo starts further
+     right, so the solid part of the fade stays under the text column. */
+  @media (min-width: 1024px) and (max-width: 1279px) {
+    .hero-fade {
+      background: linear-gradient(90deg, rgb(25, 42, 83) 0%, rgb(25, 42, 83) 47%, rgba(25, 42, 83, 0.8) 53%, rgba(25, 42, 83, 0) 66%);
+    }
+  }
+}

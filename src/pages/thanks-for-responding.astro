@@ -29,9 +29,9 @@ const sites = [
                 target="_blank"
                 rel="noopener noreferrer"
                 data-profile={`review-${s.key}`}
-                class="review-site flex h-full flex-col items-center gap-3 rounded-card border-2 border-line bg-paper px-4 py-7 transition-[border-color,transform] hover:-translate-y-1 hover:border-primary"
+                class="review-site flex h-full items-center gap-4 rounded-card border-2 border-line bg-paper px-5 py-4 sm:flex-col sm:gap-3 sm:px-4 sm:py-7 transition-[border-color,transform] hover:-translate-y-1 hover:border-primary"
               >
-                <BrandIcon name={s.key} size={48} />
+                <BrandIcon name={s.key} size={40} class="shrink-0 sm:h-12 sm:w-12" />
                 <span class="font-display text-[1.05rem] font-semibold text-ink">Review on {s.name}</span>
               </a>
             </li>
@@ -42,7 +42,7 @@ const sites = [
         *Each of these platforms will require you to sign in to leave a review. If you do not have an account, you will
         be prompted to create one.
       </p>
-      <a href={REVIEW_FUNNEL.start} class="link-arrow mt-6">← Back</a>
+      <a href={REVIEW_FUNNEL.start} class="link-arrow mt-4 py-3">← Back</a>
     </FunnelShell>
   </main>
   <Footer />

@@ -14,7 +14,7 @@ const { service = '', title = 'Get Your Free Painting Estimate', tone = 'paper' 
 ---
 
 <section id="estimate" class:list={['estimate section', tone === 'paper' ? 'bg-paper' : 'bg-surface']}>
-  <div class="wrap grid gap-10 lg:grid-cols-[0.85fr_1.15fr] lg:gap-14">
+  <div class="wrap grid gap-10 lg:grid-cols-[0.85fr_1.15fr] lg:gap-14 [&>*]:min-w-0">
     <div>
       <h2 class="reveal h2">{title}</h2>
       <p class="reveal mt-5 text-body">
@@ -32,11 +32,11 @@ const { service = '', title = 'Get Your Free Painting Estimate', tone = 'paper' 
           </a>
         </li>
         <li>
-          <a href={`mailto:${CONTACT.email}`} class="group flex items-center gap-4">
+          <a href={`mailto:${CONTACT.email}`} class="group flex min-w-0 items-center gap-4 whitespace-normal">
             <span class="estimate-icon flex h-12 w-12 items-center justify-center rounded-full bg-secondary text-paper"><Icon name="mail" size={20} stroke={1.8} /></span>
             <span>
               <span class="block text-[0.75rem] font-medium uppercase tracking-[0.1em] text-muted">Email</span>
-              <span class="font-medium text-ink group-hover:text-link">{CONTACT.email}</span>
+              <span class="break-all font-medium text-ink group-hover:text-link">{CONTACT.email}</span>
             </span>
           </a>
         </li>

@@ -33,15 +33,15 @@ const stats = [
         <dl class="reveal mt-7 grid grid-cols-3 gap-3">
           {
             stats.map((s) => (
-              <div class="area-stat rounded-card border border-line bg-paper px-3 py-4 text-center">
+              <div class="area-stat rounded-card border border-line bg-paper px-1.5 py-4 text-center sm:px-3">
                 <dt class="sr-only">{s.label}</dt>
-                <dd class="font-display text-[1.7rem] font-bold leading-none text-heading">{s.value}</dd>
-                <dd class="mt-1.5 text-[0.72rem] font-medium leading-tight text-muted" aria-hidden="true">{s.label}</dd>
+                <dd class="font-display text-[1.35rem] font-bold leading-none text-heading min-[400px]:text-[1.6rem] sm:text-[1.7rem]">{s.value}</dd>
+                <dd class="mt-1.5 text-[0.68rem] font-medium leading-tight text-muted sm:text-[0.72rem]" aria-hidden="true">{s.label}</dd>
               </div>
             ))
           }
         </dl>
-        <a href={`tel:${CONTACT.phoneTel}`} class="reveal mt-7 flex items-start gap-2 whitespace-normal font-display font-semibold text-ink hover:text-link">
+        <a href={`tel:${CONTACT.phoneTel}`} class="reveal mt-6 flex min-h-[44px] items-center gap-2 whitespace-normal py-2 font-display font-semibold text-ink hover:text-link">
           <Icon name="phone" size={18} stroke={2} class="mt-0.5 shrink-0 text-link" />
           <span class="min-w-0 whitespace-normal">Not sure if we cover you? Call <span class="whitespace-nowrap">{CONTACT.phoneDisplay}</span></span>
         </a>
@@ -61,9 +61,9 @@ const stats = [
                   class="zoom-img aspect-[4/3] w-full object-cover"
                 />
                 <span class="absolute inset-0 bg-gradient-to-t from-black/75 via-black/20 to-transparent" />
-                <span class="absolute inset-x-0 bottom-0 p-4">
-                  <span class="block font-display text-[1.15rem] font-bold text-white sm:text-[1.3rem]">{a.city}</span>
-                  <span class="mt-0.5 inline-flex items-center gap-1 text-[0.8rem] font-medium text-white/85 group-hover:text-white">
+                <span class="absolute inset-x-0 bottom-0 p-3 sm:p-4">
+                  <span class="flex items-center justify-between gap-1 font-display text-[1rem] font-bold leading-tight text-white min-[400px]:block min-[400px]:text-[1.15rem] sm:text-[1.3rem]">{a.city}<Icon name="arrow" size={16} stroke={2.2} class="shrink-0 min-[400px]:hidden" /></span>
+                  <span class="mt-0.5 hidden items-center gap-1 text-[0.8rem] font-medium text-white/85 group-hover:text-white min-[400px]:inline-flex">
                     House painting <Icon name="arrow" size={14} stroke={2} class="transition-transform group-hover:translate-x-1" />
                   </span>
                 </span>
@@ -78,7 +78,7 @@ const stats = [
       <span class="mr-1 text-[0.85rem] font-semibold text-ink">Also serving:</span>
       {
         others.map((a) => (
-          <a href={`/${a.slug}/`} class="area-pill inline-flex items-center gap-1.5 rounded-full border border-line bg-paper px-3.5 py-1.5 text-[0.85rem] font-medium text-ink transition-colors hover:border-primary hover:text-link">
+          <a href={`/${a.slug}/`} class="area-pill inline-flex items-center gap-1.5 rounded-full border border-line bg-paper px-3.5 py-2.5 text-[0.85rem] font-medium text-ink transition-colors hover:border-primary hover:text-link">
             <Icon name="pin" size={14} stroke={2} class="text-link" />
             {a.city}
           </a>
