@@ -1,0 +1,56 @@
+---
+// One even row of proof right under the hero: family-owned, insured,
+// Nextdoor Fave, BBB and a link to the Google reviews (no star rating —
+// client request). 2 columns on mobile, 5 equal cells with dividers on desktop.
+import { Image } from 'astro:assets';
+import { BADGES, PROFILES } from '../consts';
+import Icon from './Icon.astro';
+import BrandIcon from './BrandIcon.astro';
+---
+
+<section class="trust-bar relative z-10 border-b border-line bg-paper shadow-[0_12px_30px_-24px_rgba(0,0,0,0.35)]" aria-label="Why homeowners trust us">
+  <ul class="wrap grid grid-cols-2 gap-x-4 gap-y-6 py-6 lg:grid-cols-5 lg:gap-0 lg:divide-x lg:divide-line lg:py-5">
+    <li class="flex items-center gap-3 lg:justify-center lg:px-3">
+      <span class="trust-icon h-11 w-11"><Icon name="home" size={22} stroke={1.8} /></span>
+      <span class="leading-tight">
+        <span class="block text-[0.9rem] font-semibold text-ink">Family-Owned</span>
+        <span class="block text-[0.78rem] text-muted">Since 2018</span>
+      </span>
+    </li>
+    <li class="flex items-center gap-3 lg:justify-center lg:px-3">
+      <span class="trust-icon h-11 w-11"><Icon name="shield" size={22} stroke={1.8} /></span>
+      <span class="leading-tight">
+        <span class="block text-[0.9rem] font-semibold text-ink">Fully Insured</span>
+        <span class="block text-[0.78rem] text-muted">Registered MN LLC</span>
+      </span>
+    </li>
+    <li>
+      <a href={BADGES.nextdoor.href} target="_blank" rel="noopener noreferrer" data-profile="nextdoor" class="group flex items-center gap-3 lg:justify-center lg:px-3">
+        <Image src={BADGES.nextdoor.src} alt="" width={96} class="h-11 w-11 shrink-0 object-contain" />
+        <span class="leading-tight">
+          <span class="block text-[0.9rem] font-semibold text-ink group-hover:text-link">Nextdoor Fave</span>
+          <span class="block text-[0.78rem] text-muted">2021–2025</span>
+        </span>
+      </a>
+    </li>
+    <li>
+      <a href={BADGES.bbb.href} target="_blank" rel="noopener noreferrer" class="group flex items-center gap-3 lg:justify-center lg:px-3">
+        <Image src={BADGES.bbb.src} alt="" width={160} class="h-9 w-auto shrink-0 object-contain" />
+        <span class="leading-tight lg:hidden xl:block">
+          <span class="block text-[0.9rem] font-semibold text-ink group-hover:text-link">BBB</span>
+          <span class="block text-[0.78rem] text-muted">Accredited</span>
+        </span>
+        <span class="sr-only">BBB Accredited Business</span>
+      </a>
+    </li>
+    <li class="col-span-2 lg:col-span-1">
+      <a href={PROFILES.google} target="_blank" rel="noopener noreferrer" data-profile="google" class="group flex items-center gap-3 lg:justify-center lg:px-3">
+        <span class="flex h-11 w-11 shrink-0 items-center justify-center rounded-full border border-line bg-paper"><BrandIcon name="google" size={22} /></span>
+        <span class="leading-tight">
+          <span class="block text-[0.9rem] font-semibold text-ink group-hover:text-link">Google Reviews</span>
+          <span class="inline-flex items-center gap-1 text-[0.78rem] text-muted">Read them <Icon name="external" size={12} stroke={2} /></span>
+        </span>
+      </a>
+    </li>
+  </ul>
+</section>

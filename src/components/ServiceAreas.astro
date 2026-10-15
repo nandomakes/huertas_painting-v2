@@ -1,0 +1,89 @@
+---
+// Service area section: three big
+// numbers + copy on the left, photo cards for the four WordPress city pages
+// (Farmington, Apple Valley, Lakeville, Eagan) on the right, and pills for
+// the other cities underneath. Every city links to its landing page.
+import { Image } from 'astro:assets';
+import { AREA_PAGES, KEY_CITIES, BACKGROUNDS, CONTACT } from '../consts';
+import Icon from './Icon.astro';
+
+interface Props {
+  tone?: 'surface' | 'paper';
+}
+const { tone = 'surface' } = Astro.props;
+const key = KEY_CITIES.map((slug) => AREA_PAGES.find((a) => a.slug === slug)!).filter(Boolean);
+const others = AREA_PAGES.filter((a) => !KEY_CITIES.includes(a.slug));
+const stats = [
+  { value: '2018', label: 'Family-owned since' },
+  { value: '300+', label: 'Projects completed' },
+  { value: String(AREA_PAGES.length), label: 'Cities served' },
+];
+---
+
+<section id="areas" class:list={['areas section', tone === 'surface' ? 'bg-surface' : 'bg-paper']}>
+  <div class="wrap">
+    <div class="grid items-center gap-10 lg:grid-cols-[0.8fr_1.2fr] lg:gap-14">
+      <div class="min-w-0">
+        <p class="reveal eyebrow text-muted">Service area</p>
+        <h2 class="reveal h2 mt-2">Painting Homes Across the South Metro</h2>
+        <p class="reveal mt-5 text-body">
+          Based in Apple Valley, we paint interiors, exteriors, ceilings and decks throughout Dakota County and the
+          southern Twin Cities. Pick your city to see what we do there.
+        </p>
+        <dl class="reveal mt-7 grid grid-cols-3 gap-3">
+          {
+            stats.map((s) => (
+              <div class="area-stat rounded-card border border-line bg-paper px-3 py-4 text-center">
+                <dt class="sr-only">{s.label}</dt>
+                <dd class="font-display text-[1.7rem] font-bold leading-none text-heading">{s.value}</dd>
+                <dd class="mt-1.5 text-[0.72rem] font-medium leading-tight text-muted" aria-hidden="true">{s.label}</dd>
+              </div>
+            ))
+          }
+        </dl>
+        <a href={`tel:${CONTACT.phoneTel}`} class="reveal mt-7 flex items-start gap-2 whitespace-normal font-display font-semibold text-ink hover:text-link">
+          <Icon name="phone" size={18} stroke={2} class="mt-0.5 shrink-0 text-link" />
+          <span class="min-w-0 whitespace-normal">Not sure if we cover you? Call <span class="whitespace-nowrap">{CONTACT.phoneDisplay}</span></span>
+        </a>
+      </div>
+
+      <ul class="grid grid-cols-2 gap-4">
+        {
+          key.map((a) => (
+            <li class="reveal">
+              <a href={`/${a.slug}/`} class="area-card zoom-parent group relative block overflow-hidden rounded-card">
+                <Image
+                  src={BACKGROUNDS.areas[a.slug]}
+                  alt={`Home painting in ${a.city}, MN`}
+                  widths={[320, 560]}
+                  sizes="(min-width: 1024px) 19rem, 46vw"
+                  loading="lazy"
+                  class="zoom-img aspect-[4/3] w-full object-cover"
+                />
+                <span class="absolute inset-0 bg-gradient-to-t from-black/75 via-black/20 to-transparent" />
+                <span class="absolute inset-x-0 bottom-0 p-4">
+                  <span class="block font-display text-[1.15rem] font-bold text-white sm:text-[1.3rem]">{a.city}</span>
+                  <span class="mt-0.5 inline-flex items-center gap-1 text-[0.8rem] font-medium text-white/85 group-hover:text-white">
+                    House painting <Icon name="arrow" size={14} stroke={2} class="transition-transform group-hover:translate-x-1" />
+                  </span>
+                </span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+
+    <div class="reveal mt-10 flex flex-wrap items-center justify-center gap-2.5 lg:justify-start">
+      <span class="mr-1 text-[0.85rem] font-semibold text-ink">Also serving:</span>
+      {
+        others.map((a) => (
+          <a href={`/${a.slug}/`} class="area-pill inline-flex items-center gap-1.5 rounded-full border border-line bg-paper px-3.5 py-1.5 text-[0.85rem] font-medium text-ink transition-colors hover:border-primary hover:text-link">
+            <Icon name="pin" size={14} stroke={2} class="text-link" />
+            {a.city}
+          </a>
+        ))
+      }
+    </div>
+  </div>
+</section>

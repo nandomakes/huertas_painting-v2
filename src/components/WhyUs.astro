@@ -1,0 +1,70 @@
+---
+// One persuasive block instead of four: photo with a proof card, the
+// reasons to choose Huerta's as a two-column checklist, the founder's
+// promise in his own words, and the two CTAs.
+import { Image } from 'astro:assets';
+import { IMAGES, CONTACT, QUOTE } from '../consts';
+import Icon from './Icon.astro';
+
+const points = [
+  'Free in-home consultation & custom quote',
+  'Owner on every project, start to finish',
+  'Thorough prep: patching, sanding, priming',
+  'Floors & furniture protected, full clean-up',
+  'Fully registered & insured Minnesota LLC',
+  'Workmanship guaranteed — 100% satisfaction',
+];
+---
+
+<section id="why-us" class="why section bg-paper">
+  <div class="wrap grid items-center gap-12 lg:grid-cols-[0.85fr_1.15fr] lg:gap-16">
+    <div class="reveal relative mx-auto w-full max-w-[26rem] lg:max-w-none">
+      <Image
+        src={IMAGES.pedro2.src}
+        alt={IMAGES.pedro2.alt}
+        widths={[376, 752]}
+        sizes="(min-width: 1024px) 26rem, 100vw"
+        loading="lazy"
+        class="why-photo aspect-[4/4.6] w-full rounded-card object-cover object-top"
+      />
+      <div class="why-stat card absolute -bottom-6 right-4 flex items-center gap-3 px-5 py-4 sm:-right-6">
+        <span class="font-display text-[2.1rem] font-bold leading-none text-heading">300+</span>
+        <span class="text-[0.8rem] font-medium leading-tight text-ink">projects across<br />the South Metro</span>
+      </div>
+    </div>
+
+    <div>
+      <p class="reveal eyebrow text-muted">Why Huerta's Painting</p>
+      <h2 class="reveal h2 mt-2">A Family-Owned Team That Treats Your Home Like Our Own</h2>
+      <p class="reveal mt-5 text-body">
+        We're a locally-owned painting company in Apple Valley, known for fair estimates, exceptional painting and
+        timely completion — and for not missing a detail.
+      </p>
+      <ul class="reveal mt-7 grid gap-x-6 gap-y-3.5 sm:grid-cols-2">
+        {
+          points.map((p) => (
+            <li class="flex items-start gap-2.5 text-[0.95rem] text-ink">
+              <span class="why-check mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-primary text-onPrimary">
+                <Icon name="check" size={13} stroke={3} />
+              </span>
+              {p}
+            </li>
+          ))
+        }
+      </ul>
+
+      <figure class="reveal why-quote mt-8 flex items-center gap-4 rounded-card bg-surface p-4 sm:p-5">
+        <Image src={IMAGES.pedro.src} alt={IMAGES.pedro.alt} width={112} class="h-14 w-14 shrink-0 rounded-full object-cover object-top" loading="lazy" />
+        <div>
+          <blockquote class="text-[0.95rem] italic leading-snug text-ink">“{QUOTE.text}”</blockquote>
+          <figcaption class="mt-1 text-[0.8rem] font-semibold text-muted">{QUOTE.author}, Founder</figcaption>
+        </div>
+      </figure>
+
+      <div class="reveal mt-8 flex flex-wrap gap-3">
+        <a href="#estimate" class="btn btn-primary">Schedule Free Estimate <Icon name="calendar" size={18} stroke={1.8} /></a>
+        <a href={`tel:${CONTACT.phoneTel}`} class="btn btn-outline">Call {CONTACT.phoneDisplay}</a>
+      </div>
+    </div>
+  </div>
+</section>

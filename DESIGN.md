@@ -3,15 +3,19 @@
 **Estructura / layout / padding:** paris-painting.com · **Branding / estilo / assets:** paris-painting.com
 (medido con DevTools el 2026-10-13).
 
-## Estructura (compartida por las 3 versiones)
-1. Barra de anuncio + header blanco: logo, menú con dropdowns, **bloque de teléfono** a la derecha a toda la altura.
-2. Hero dividido: panel de color con eyebrow, H1, texto y enlace "Call or text"; **foto de la van** a la derecha;
-   tarjeta flotante "Free estimate" que se monta sobre la franja de confianza.
-3. Reseñas (tarjetas sin estrellas) + botones a Google / Nextdoor / Facebook.
-4. Split foto + checklist con iconos → tarjetas de reconocimiento → grid de servicios 3×2 → garantías →
-   split de texto + before/after → proceso de 4 pasos → "At a glance" + ciudades → historia → fundador →
-   FAQ → formulario de estimado → banda CTA → footer.
-- Columna de contenido: **1080px** (`.wrap`). Secciones: **72px** de padding vertical (`.section`, 56px en móvil).
+## Estructura (compartida por las 3 versiones) — landing de conversión
+1. Barra superior + header con **bloque de teléfono** a la derecha.
+2. Hero dividido con la **foto de la van**, enlace "Call or text" y tarjeta "Schedule Free Estimate".
+3. **Trust bar**: una fila pareja (Family-owned since 2018 · Fully insured · Nextdoor Fave · BBB · Google reviews).
+4. **Reseñas** estilo widget (panel de resumen + carrusel de tarjetas con avatar, etiqueta del trabajo, "Read more" y
+   "Verified review on Google"). Sin estrellas ni calificación.
+5. Servicios (grid 3×2; 2 columnas compactas en móvil) → **banda CTA a media página**.
+6. **Why us**: foto con "300+ projects", checklist en 2 columnas, cita de Pedro y CTAs.
+7. Proceso de 4 pasos.
+8. **Áreas de servicio**: tarjetas con foto para Farmington, Apple Valley, Lakeville y Eagan + pastillas para el
+   resto de ciudades + 3 cifras (2018 · 300+ · 9 ciudades).
+9. FAQ → formulario de estimado → footer.
+Columna de **1080px**, secciones con **72px** de padding vertical.
 
 ## Branding de esta versión
 - Colores: azul marino `#192A53` (barra, hero, footer), naranja `#F27834` (botones y títulos H2), crema `#F7F5F1`

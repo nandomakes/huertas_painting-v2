@@ -185,8 +185,8 @@ const ga4Id = import.meta.env.PUBLIC_GA4_ID ?? GA4_ID;
       // Snap carousels: prev/next scroll one card; disabled at the ends.
       document.querySelectorAll<HTMLElement>('[data-carousel]').forEach((root) => {
         const track = root.querySelector<HTMLElement>('[data-track]');
-        const prev = root.querySelector<HTMLButtonElement>('[data-prev]');
-        const next = root.querySelector<HTMLButtonElement>('[data-next]');
+        const prevs = root.querySelectorAll<HTMLButtonElement>('[data-prev]');
+        const nexts = root.querySelectorAll<HTMLButtonElement>('[data-next]');
         if (!track) return;
         const step = () => {
           const card = track.firstElementChild as HTMLElement | null;
@@ -195,11 +195,11 @@ const ga4Id = import.meta.env.PUBLIC_GA4_ID ?? GA4_ID;
         };
         const sync = () => {
           const max = track.scrollWidth - track.clientWidth - 2;
-          if (prev) prev.disabled = track.scrollLeft <= 2;
-          if (next) next.disabled = track.scrollLeft >= max;
+          prevs.forEach((b) => (b.disabled = track.scrollLeft <= 2));
+          nexts.forEach((b) => (b.disabled = track.scrollLeft >= max));
         };
-        prev?.addEventListener('click', () => track.scrollBy({ left: -step() }));
-        next?.addEventListener('click', () => track.scrollBy({ left: step() }));
+        prevs.forEach((b) => b.addEventListener('click', () => track.scrollBy({ left: -step() })));
+        nexts.forEach((b) => b.addEventListener('click', () => track.scrollBy({ left: step() })));
         track.addEventListener('scroll', sync, { passive: true });
         window.addEventListener('resize', sync);
         sync();
